@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zylo - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0b0e11] text-white flex items-center justify-center min-h-screen">
+
+    <div class="glass-card p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg text-center shadow-2xl">
+        <h1 class="text-4xl font-black italic bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-2">ZYLO</h1>
+        <p class="text-gray-500 text-xs uppercase tracking-[0.2em] mb-8">Autenticação Segura</p>
+
+        <button id="btn-google" class="w-full bg-white text-black font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-200 transition-all active:scale-95">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" class="w-5 h-5">
+            Entrar com Google
+        </button>
+
+        <div id="status" class="mt-6 text-blue-400 text-xs font-mono hidden">
+            <span class="animate-pulse">A verificar credenciais...</span>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+</body>
+</html>
+
