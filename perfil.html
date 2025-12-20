@@ -1,52 +1,163 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil | HTML Hub</title>
+    <title>Perfil | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Ajustes específicos para a página de perfil */
-        body { display: block; overflow-y: auto; padding-bottom: 100px; }
-        .app { max-width: 480px; margin: 20px auto; display: flex; flex-direction: column; gap: 16px; padding: 0 15px; }
+        /* Estilos específicos para o novo Perfil */
+        body { display: block; overflow-y: auto; padding-bottom: 110px; }
         
-        .profile { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 26px; overflow: hidden; position: relative; }
-        .profile-banner { height: 145px; background: linear-gradient(135deg, #2b3170, var(--primary)); background-size: cover; }
-        
-        .avatar { width: 82px; height: 82px; border-radius: 22px; overflow: hidden; border: 4px solid var(--bg-dark); position: absolute; left: 16px; top: 78px; background: #000; }
-        .avatar.online { border-color: #4cff8f; }
-        .avatar.offline { border-color: #ff5c5c; }
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
 
-        .profile-content { padding: 22px 16px 14px 116px; }
-        .profile-name { font-size: 1.35em; font-weight: 800; color: white; }
-        .profile-status { font-size: .8em; font-weight: 600; }
-        .profile-status.online { color: #4cff8f; }
-        .profile-status.offline { color: #ff5c5c; }
-        .profile-bio { margin-top: 5px; font-size: .9em; color: var(--text-dim); }
+        /* HEADER DO SITE */
+        .app-header {
+            padding: 20px;
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
 
-        .section { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 22px; padding: 16px; }
-        .html-item { background: rgba(0,0,0,0.3); border-radius: 18px; overflow: hidden; margin-top: 14px; border: 1px solid var(--glass-border); }
-        .html-cover { height: 100px; background: #000 center/cover no-repeat; }
-        .html-body { padding: 14px; }
-        .html-actions { display: flex; gap: 6px; margin-top: 12px; }
-        .html-actions button { flex: 1; border: none; border-radius: 8px; padding: 8px; font-size: .8em; font-weight: 600; color: #fff; cursor: pointer; }
-        
-        .open { background: var(--primary); }
-        .edit { background: #6f5cff; }
-        .del { background: #ff5c5c; }
+        /* CARD DE PERFIL */
+        .profile-card-main {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
 
-        /* Estilo dos Modais */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
-        .modal.show { display: flex; }
-        .modal-box { width: 100%; max-width: 400px; background: #1e293b; border-radius: 24px; padding: 25px; border: 1px solid var(--glass-border); }
+        .banner-wrapper {
+            height: 160px;
+            background: linear-gradient(135deg, #1e293b, #4f46e5);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-top: -50px;
+            padding: 0 25px;
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .avatar-frame {
+            width: 100px;
+            height: 100px;
+            border-radius: 28px;
+            border: 5px solid var(--bg-dark);
+            background: #000;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .status-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid #000;
+        }
+        .status-badge.online { background: #10b981; box-shadow: 0 0 10px #10b981; }
+        .status-badge.offline { background: #64748b; }
+
+        /* INFO TEXT */
+        .profile-info-box {
+            padding: 20px 25px;
+        }
+
+        .name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .full-name { font-size: 1.5rem; font-weight: 800; color: #fff; }
+        .status-tag { 
+            font-size: 0.65rem; 
+            padding: 2px 8px; 
+            border-radius: 20px; 
+            background: rgba(255,255,255,0.1);
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .username-handle { color: var(--primary); font-weight: 600; font-size: 0.9rem; display: block; }
         
-        .btn { padding: 12px; border: none; border-radius: 14px; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
-        .btn.alt { background: rgba(255,255,255,0.1); color: white; margin-bottom: 10px; }
+        .creation-date { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-size: 0.75rem; 
+            color: var(--text-dim); 
+            margin-top: 12px;
+        }
+
+        .bio-text {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        /* BOTÃO EDITAR */
+        .edit-trigger {
+            margin: 20px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            width: calc(100% - 50px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .edit-trigger:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* MODAL MELHORADO */
+        .modal-content-plus {
+            background: #1e293b;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .input-group-edit { margin-bottom: 15px; }
+        .input-group-edit label { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 5px; display: block; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalPop { from { opacity: 0; scale: 0.9; } to { opacity: 1; scale: 1; } }
     </style>
 </head>
-
 <body class="dashboard-body">
 
     <div class="background-wrapper">
@@ -54,31 +165,39 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <div class="app">
-        <div class="profile">
-            <div class="profile-banner" id="profileBanner"></div>
-            <div class="avatar" id="avatar">
-                <img id="profileImg" src="">
+    <header class="app-header">HTML HUB</header>
+
+    <div class="profile-container">
+        <div class="profile-card-main">
+            <div class="banner-wrapper" id="viewBanner"></div>
+
+            <div class="avatar-container">
+                <div class="avatar-frame">
+                    <img id="viewImg" src="">
+                    <div id="statusIndicator" class="status-badge online"></div>
+                </div>
             </div>
-            <div class="profile-content">
-                <div class="profile-name" id="profileName">Carregando...</div>
-                <div class="profile-status" id="statusText">Offline</div>
-                <div class="profile-bio" id="profileBio">...</div>
+
+            <div class="profile-info-box">
+                <div class="name-row">
+                    <span class="full-name" id="viewName">Nome de Usuário</span>
+                    <span class="status-tag" id="viewStatusText">Online</span>
+                </div>
+                <span class="username-handle" id="viewHandle">@usuario</span>
+                
+                <div class="bio-text" id="viewBio">Sua bio aparecerá aqui. Conte um pouco sobre você.</div>
+
+                <div class="creation-date">
+                    <i data-lucide="calendar" size="14"></i>
+                    <span>Conta criada em: </span>
+                    <strong id="viewDate">20 de Dezembro, 2025</strong>
+                </div>
             </div>
-        </div>
 
-        <div class="top-actions">
-            <button class="btn alt" onclick="openProfile()">Editar Perfil</button>
-        </div>
-
-        <div class="section">
-            <h3 style="color: white; font-size: 1rem;"><i data-lucide="code" style="width:16px; vertical-align:middle"></i> Meus Projetos HTML</h3>
-            <div id="htmlList"></div>
-            <button class="btn" onclick="openHtml()" style="margin-top:15px">＋ Novo HTML</button>
-        </div>
-
-        <div style="text-align: center; color: var(--text-dim); font-size: 0.7rem; margin-top: 10px;">
-            HTML Hub • v3.8 • Beta
+            <button class="edit-trigger" onclick="openEditModal()">
+                <i data-lucide="edit-3" size="18"></i>
+                Editar Perfil
+            </button>
         </div>
     </div>
 
@@ -93,175 +212,111 @@
         </button>
     </nav>
 
-    <div class="modal" id="profileModal">
-        <div class="modal-box">
-            <h3 style="color:white; margin-bottom:15px">Editar Perfil</h3>
-            <input id="nameInput" placeholder="Nome">
-            <textarea id="bioInput" placeholder="Sua Bio"></textarea>
-            <label style="font-size:0.7rem; color:var(--text-dim)">Foto de Perfil:</label>
-            <input type="file" id="imgInput" style="padding:5px">
-            <label style="font-size:0.7rem; color:var(--text-dim)">Banner:</label>
-            <input type="file" id="bannerInput" style="padding:5px">
-            <button class="btn" onclick="saveProfile()">Salvar Alterações</button>
-        </div>
-    </div>
+    <div class="modal" id="editModal">
+        <div class="modal-content-plus">
+            <h2 style="margin-bottom: 20px;">Editar Perfil</h2>
+            
+            <div class="input-group-edit">
+                <label>Nome Exibido</label>
+                <input type="text" id="editName" placeholder="Seu nome">
+            </div>
 
-    <div class="modal" id="htmlModal">
-        <div class="modal-box">
-            <h3 style="color:white; margin-bottom:15px">Novo Código HTML</h3>
-            <input id="htmlName" placeholder="Nome do Projeto">
-            <textarea id="htmlCode" placeholder="Cole seu código aqui..."></textarea>
-            <label style="font-size:0.7rem; color:var(--text-dim)">Capa do Projeto:</label>
-            <input type="file" id="htmlCoverInput">
-            <button class="btn" onclick="saveHtml()">Salvar Projeto</button>
+            <div class="input-group-edit">
+                <label>Sua Bio</label>
+                <textarea id="editBio" placeholder="Escreva sobre você..."></textarea>
+            </div>
+
+            <div class="input-group-edit">
+                <label>Foto de Perfil</label>
+                <input type="file" id="inputImg" accept="image/*">
+            </div>
+
+            <div class="input-group-edit">
+                <label>Imagem do Banner</label>
+                <input type="file" id="inputBanner" accept="image/*">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn alt" style="flex:1" onclick="closeModal()">Cancelar</button>
+                <button class="btn" style="flex:2" onclick="saveData()">Salvar Alterações</button>
+            </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        /* ===== STATUS ONLINE/OFFLINE ===== */
-        function updateStatus() {
-            const online = navigator.onLine;
-            const statusEl = document.getElementById('statusText');
-            const avatarEl = document.getElementById('avatar');
-            statusEl.textContent = online ? "Online" : "Offline";
-            statusEl.className = "profile-status " + (online ? "online" : "offline");
-            avatarEl.className = "avatar " + (online ? "online" : "offline");
-        }
-        window.addEventListener("online", updateStatus);
-        window.addEventListener("offline", updateStatus);
-
-        /* ===== LOGICA DE PERFIL ===== */
-        let profile = JSON.parse(localStorage.getItem("profile")) || {
-            name: "Usuário",
-            bio: "Clique em editar para mudar sua bio",
+        // Dados Iniciais ou LocalStorage
+        let userData = JSON.parse(localStorage.getItem("userProfile")) || {
+            name: "Kauê Machado",
+            handle: "@kaue_dev",
+            bio: "Apaixonado por tecnologia e design minimalista.",
             img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue",
-            banner: ""
+            banner: "",
+            created: "20 de Dezembro, 2025"
         };
 
-        function renderProfile() {
-            document.getElementById('profileName').textContent = profile.name;
-            document.getElementById('profileBio').textContent = profile.bio;
-            document.getElementById('profileImg').src = profile.img;
-            const banner = document.getElementById('profileBanner');
-            banner.style.backgroundImage = profile.banner ? `url(${profile.banner})` : "linear-gradient(135deg,#2b3170,#4f7cff)";
-        }
-
-        // Upload de Imagens
-        document.getElementById('imgInput').onchange = e => {
-            const r = new FileReader();
-            r.onload = () => { profile.img = r.result; renderProfile(); };
-            r.readAsDataURL(e.target.files[0]);
-        };
-        document.getElementById('bannerInput').onchange = e => {
-            const r = new FileReader();
-            r.onload = () => { profile.banner = r.result; renderProfile(); };
-            r.readAsDataURL(e.target.files[0]);
-        };
-
-        function openProfile() {
-            document.getElementById('nameInput').value = profile.name;
-            document.getElementById('bioInput').value = profile.bio;
-            document.getElementById('profileModal').classList.add("show");
-        }
-
-        function saveProfile() {
-            profile.name = document.getElementById('nameInput').value;
-            profile.bio = document.getElementById('bioInput').value;
-            localStorage.setItem("profile", JSON.stringify(profile));
-            renderProfile();
-            document.getElementById('profileModal').classList.remove("show");
-        }
-
-        /* ===== LOGICA DE HTMLs (CRUD) ===== */
-        let htmls = JSON.parse(localStorage.getItem("htmls")) || [];
-        let editingIndex = null;
-        let coverTemp = "";
-
-        document.getElementById('htmlCoverInput').onchange = e => {
-            const r = new FileReader();
-            r.onload = () => { coverTemp = r.result; };
-            r.readAsDataURL(e.target.files[0]);
-        };
-
-        function renderHtmls() {
-            const list = document.getElementById('htmlList');
-            list.innerHTML = "";
-            htmls.forEach((h, i) => {
-                list.innerHTML += `
-                <div class="html-item">
-                    <div class="html-cover" style="background-image:url('${h.cover || ""}')"></div>
-                    <div class="html-body">
-                        <div class="html-name" style="color:white; font-weight:700">${h.name}</div>
-                        <div class="html-meta" style="color:var(--text-dim); font-size:0.7rem">${h.updated}</div>
-                        <div class="html-actions">
-                            <button class="open" onclick="openFile(${i})">Abrir</button>
-                            <button class="edit" onclick="editHtml(${i})">Editar</button>
-                            <button class="del" onclick="delHtml(${i})">X</button>
-                        </div>
-                    </div>
-                </div>`;
-            });
-        }
-
-        function openHtml() {
-            editingIndex = null;
-            document.getElementById('htmlName').value = "";
-            document.getElementById('htmlCode').value = "";
-            coverTemp = "";
-            document.getElementById('htmlModal').classList.add("show");
-        }
-
-        function saveHtml() {
-            const now = new Date().toLocaleString();
-            const name = document.getElementById('htmlName').value;
-            const code = document.getElementById('htmlCode').value;
+        function render() {
+            document.getElementById('viewName').textContent = userData.name;
+            document.getElementById('viewBio').textContent = userData.bio;
+            document.getElementById('viewHandle').textContent = `@${userData.name.toLowerCase().replace(/\s/g, '_')}`;
+            document.getElementById('viewImg').src = userData.img;
+            document.getElementById('viewDate').textContent = userData.created;
             
-            if(editingIndex === null) {
-                htmls.push({name, code, cover: coverTemp, updated: now});
-            } else {
-                htmls[editingIndex] = {name, code, cover: coverTemp || htmls[editingIndex].cover, updated: now};
-            }
-            
-            localStorage.setItem("htmls", JSON.stringify(htmls));
-            document.getElementById('htmlModal').classList.remove("show");
-            renderHtmls();
+            const banner = document.getElementById('viewBanner');
+            banner.style.backgroundImage = userData.banner ? `url(${userData.banner})` : "linear-gradient(135deg, #1e293b, #4f46e5)";
         }
 
-        function editHtml(i) {
-            editingIndex = i;
-            document.getElementById('htmlName').value = htmls[i].name;
-            document.getElementById('htmlCode').value = htmls[i].code;
-            document.getElementById('htmlModal').classList.add("show");
+        // Funções de Modal
+        function openEditModal() {
+            document.getElementById('editName').value = userData.name;
+            document.getElementById('editBio').value = userData.bio;
+            document.getElementById('editModal').classList.add('show');
         }
 
-        function delHtml(i) {
-            if(confirm("Deseja realmente excluir este projeto?")) {
-                htmls.splice(i, 1);
-                localStorage.setItem("htmls", JSON.stringify(htmls));
-                renderHtmls();
-            }
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('show');
         }
 
-        function openFile(i) {
-            const w = window.open();
-            w.document.write(htmls[i].code);
-            w.document.close();
+        function saveData() {
+            userData.name = document.getElementById('editName').value;
+            userData.bio = document.getElementById('editBio').value;
+            localStorage.setItem("userProfile", JSON.stringify(userData));
+            render();
+            closeModal();
+            lucide.createIcons();
         }
 
-        // Fechar modais ao clicar fora
-        window.onclick = e => {
-            if (e.target.className === 'modal show') {
-                document.getElementById('profileModal').classList.remove('show');
-                document.getElementById('htmlModal').classList.remove('show');
-            }
+        // Leitura de Imagens
+        document.getElementById('inputImg').onchange = e => {
+            const r = new FileReader();
+            r.onload = () => { userData.img = r.result; };
+            r.readAsDataURL(e.target.files[0]);
         };
 
-        // Inicialização
-        renderProfile();
-        renderHtmls();
-        updateStatus();
+        document.getElementById('inputBanner').onchange = e => {
+            const r = new FileReader();
+            r.onload = () => { userData.banner = r.result; };
+            r.readAsDataURL(e.target.files[0]);
+        };
+
+        // Status em tempo real
+        function checkStatus() {
+            const isOnline = navigator.onLine;
+            const dot = document.getElementById('statusIndicator');
+            const txt = document.getElementById('viewStatusText');
+            
+            dot.className = `status-badge ${isOnline ? 'online' : 'offline'}`;
+            txt.textContent = isOnline ? "Online" : "Offline";
+            txt.style.color = isOnline ? "#10b981" : "#64748b";
+        }
+
+        window.addEventListener('online', checkStatus);
+        window.addEventListener('offline', checkStatus);
+
+        // Início
+        render();
+        checkStatus();
     </script>
 </body>
 </html>
