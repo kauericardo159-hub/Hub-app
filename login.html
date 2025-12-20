@@ -3,69 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Sua Plataforma</title>
+    <title>Login | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="dashboard-body" style="display: flex; align-items: center; justify-content: center;">
 
-    <div class="bg-blur-elements">
-        <div class="circle cyan"></div>
-        <div class="circle purple"></div>
+    <div class="background-wrapper">
+        <div class="glow-sphere pulse"></div>
+        <div class="glow-sphere secondary"></div>
     </div>
 
-    <main class="container">
-        <div class="glass-card">
-            <header>
-                <div class="logo-icon">
-                    <i data-lucide="shield-check"></i>
-                </div>
-                <h1>Acesse sua conta</h1>
-                <p>Entre com seu usuário e senha abaixo.</p>
-            </header>
+    <main class="login-box fade-in">
+        <div class="glass-card" style="width: 100%; max-width: 380px; padding: 40px; text-align: center;">
+            
+            <div class="brand-logo" style="margin: 0 auto 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);">
+                <i data-lucide="shield-check" style="color: white; width: 30px; height: 30px;"></i>
+            </div>
 
-            <form id="login-form" onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label for="username">Usuário</label>
-                    <div class="input-wrapper">
-                        <i data-lucide="user"></i>
-                        <input type="text" id="username" placeholder="Digite seu usuário" required>
+            <h1 style="margin-bottom: 10px;">Acessar Portal</h1>
+            <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 30px;">Insira suas credenciais HUB</p>
+
+            <form id="loginForm">
+                <div class="input-field">
+                    <label>ID ou Usuário</label>
+                    <div class="field-container">
+                        <i data-lucide="hash" class="field-icon"></i>
+                        <input type="text" id="user" placeholder="Ex: admin" required>
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <label for="password">Senha</label>
-                    <div class="input-wrapper">
-                        <i data-lucide="lock"></i>
-                        <input type="password" id="password" placeholder="••••••••" required>
+                <div class="input-field" style="margin-top: 20px;">
+                    <label>Senha de Acesso</label>
+                    <div class="field-container">
+                        <i data-lucide="key-round" class="field-icon"></i>
+                        <input type="password" id="pass" placeholder="••••••••" required>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">Entrar na plataforma</button>
+                <button type="submit" class="cta-button" style="margin-top: 30px;">
+                    <span>Entrar no Sistema</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
             </form>
 
-            <footer class="form-footer">
-                <a href="#">Esqueceu a senha?</a>
-                <span>Não tem conta? <a href="#">Criar agora</a></span>
-            </footer>
+            <div style="margin-top: 25px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <p style="font-size: 0.85rem; color: var(--text-dim);">
+                    Não possui um ID? <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 700;">Criar ID HUB</a>
+                </p>
+            </div>
         </div>
     </main>
 
     <script>
-        // Inicializa os ícones
         lucide.createIcons();
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-
-            // Logica temporária de teste
-            console.log("Tentativa de login:", { user, pass });
-            alert(`Bem-vindo, ${user}! Redirecionando...`);
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
             
-            // Aqui você faria o fetch para sua API na Vercel
-        }
+            const userInput = document.getElementById('user').value;
+            const passInput = document.getElementById('pass').value;
+            const btn = document.querySelector('.cta-button');
+
+            // Feedback de carregamento
+            btn.innerHTML = '<span>Verificando...</span>';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                const savedProfile = JSON.parse(localStorage.getItem("profile"));
+
+                // 1. Verifica se é o Admin padrão
+                if (userInput === "admin" && passInput === "1234") {
+                    if (!savedProfile) {
+                        // Cria um perfil admin se não existir
+                        localStorage.setItem("profile", JSON.stringify({
+                            name: "Administrador",
+                            handle: "admin",
+                            hubID: "HUB_00000000",
+                            created: "20/12/2025",
+                            bio: "Conta mestre do sistema.",
+                            img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+                        }));
+                    }
+                    window.location.href = 'dashboard.html';
+                } 
+                // 2. Verifica se é o usuário cadastrado (pelo nome ou pelo ID)
+                else if (savedProfile && (userInput === savedProfile.name || userInput === savedProfile.hubID) && passInput === "1234") {
+                    window.location.href = 'dashboard.html';
+                } 
+                else {
+                    alert("Acesso negado. Verifique seu ID e Senha.");
+                    btn.innerHTML = '<span>Entrar no Sistema</span> <i data-lucide="arrow-right"></i>';
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                }
+                lucide.createIcons();
+            }, 1000);
+        };
     </script>
 </body>
 </html>
