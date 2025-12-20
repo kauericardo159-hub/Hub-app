@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil | HTML Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Ajustes específicos para a tela de edição */
+        .edit-container { max-width: 440px; margin: 0 auto; padding: 20px 15px; }
+        .setup-section { margin-bottom: 25px; }
+        .setup-section h3 { font-size: 0.9rem; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        
+        .upload-group { display: flex; gap: 15px; margin-bottom: 20px; }
+        .upload-box { 
+            flex: 1; background: var(--input-bg); border: 2px dashed var(--glass-border); 
+            border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .upload-box:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
+        .upload-box i { color: var(--text-dim); margin-bottom: 8px; }
+        .upload-box span { display: block; font-size: 0.7rem; color: var(--text-dim); font-weight: 600; }
+
+        .preview-circle { width: 50px; height: 50px; border-radius: 15px; object-fit: cover; margin: 10px auto 0; display: none; border: 2px solid var(--primary); }
+        
+        input[type="file"] { display: none; }
+        
+        .save-area { position: fixed; bottom: 110px; left: 0; width: 100%; padding: 0 20px; }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <div class="background-wrapper">
+        <div class="glow-sphere pulse"></div>
+        <div class="glow-sphere secondary"></div>
+    </div>
+
+    <header class="app-header">
+        <button onclick="window.location.href='perfil.html'" style="position: absolute; left: 20px; background: none; border: none; color: white; cursor: pointer;">
+            <i data-lucide="arrow-left"></i>
+        </button>
+        <span class="app-brand">CONFIGURAÇÕES</span>
+    </header>
+
+    <main class="edit-container fade-in">
+        
+        <div class="glass-card" style="padding: 25px;">
+            
+            <div class="setup-section">
+                <h3>Aparência</h3>
+                <div class="upload-group">
+                    <label class="upload-box">
+                        <i data-lucide="camera"></i>
+                        <span>Foto Perfil</span>
+                        <input type="file" id="edit-avatar" accept="image/*">
+                        <img id="pre-avatar" class="preview-circle">
+                    </label>
+                    <label class="upload-box">
+                        <i data-lucide="image"></i>
+                        <span>Banner</span>
+                        <input type="file" id="edit-banner" accept="image/*">
+                        <img id="pre-banner" class="preview-circle" style="width: 80px; aspect-ratio: 16/9; border-radius: 8px;">
+                    </label>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <h3>Informações Pessoais</h3>
+                
+                <div class="input-field">
+                    <label>Nome Visível</label>
+                    <div class="field-container">
+                        <i data-lucide="user" class="field-icon"></i>
+                        <input type="text" id="edit-name" placeholder="Ex: Kauê Machado">
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label>Nome de Usuário (@)</label>
+                    <div class="field-container">
+                        <i data-lucide="at-sign" class="field-icon"></i>
+                        <input type="text" id="edit-handle" placeholder="kaue_hub">
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label>Biografia</label>
+                    <div class="field-container">
+                        <textarea id="edit-bio" style="width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border); border-radius: 12px; color: white; padding: 12px; min-height: 80px; outline: none; transition: 0.3s;" placeholder="Conte um pouco sobre si..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="saveAll()">
+                <i data-lucide="save"></i>
+                <span>Guardar Alterações</span>
+            </button>
+
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="window.location.href='dashboard.html'">
+            <i data-lucide="layout-grid"></i>
+            <span>Início</span>
+        </button>
+        <button class="nav-item active" onclick="window.location.href='perfil.html'">
+            <i data-lucide="user"></i>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <script>
+        lucide.createIcons();
+
+        // Carregar dados atuais nos campos
+        const profileData = JSON.parse(localStorage.getItem("profile")) || {
+            name: "Usuário",
+            handle: "usuario",
+            bio: "",
+            img: "",
+            banner: "",
+            created: new Date().toLocaleDateString()
+        };
+
+        document.getElementById('edit-name').value = profileData.name;
+        document.getElementById('edit-handle').value = profileData.handle;
+        document.getElementById('edit-bio').value = profileData.bio;
+
+        // Preview de Imagem (Avatar)
+        document.getElementById('edit-avatar').onchange = e => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                profileData.img = reader.result;
+                const img = document.getElementById('pre-avatar');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        };
+
+        // Preview de Imagem (Banner)
+        document.getElementById('edit-banner').onchange = e => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                profileData.banner = reader.result;
+                const img = document.getElementById('pre-banner');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        };
+
+        // Função para Guardar tudo
+        function saveAll() {
+            profileData.name = document.getElementById('edit-name').value;
+            profileData.handle = document.getElementById('edit-handle').value;
+            profileData.bio = document.getElementById('edit-bio').value;
+
+            localStorage.setItem("profile", JSON.stringify(profileData));
+            
+            // Efeito visual de sucesso
+            const btn = document.querySelector('.cta-button');
+            btn.style.background = "var(--success)";
+            btn.innerHTML = "<span>Guardado com Sucesso!</span>";
+            
+            setTimeout(() => {
+                window.location.href = 'perfil.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
