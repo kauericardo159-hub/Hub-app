@@ -3,52 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurações | HTML HUB</title>
+    <title>Editar Perfil | HUB</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        .edit-container { max-width: 440px; margin: 0 auto; padding: 10px 15px 100px; }
-        
-        /* Box de ID Bloqueado */
-        .id-lock-box {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
-        .id-lock-info span { display: block; font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
-        .id-lock-info strong { color: var(--success); font-family: monospace; font-size: 1.1rem; }
-        .lock-icon { color: var(--text-dim); opacity: 0.5; }
-
-        /* Upload Estilizado */
-        .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .upload-card {
-            background: var(--input-bg);
-            border: 2px dashed var(--glass-border);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            transition: 0.3s;
-        }
-        .upload-card:hover { border-color: var(--primary); }
-        .upload-card span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--text-dim); margin-top: 5px; }
-        
-        .preview-img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; margin: 8px auto 0; display: none; border: 1px solid var(--primary); }
-        input[type="file"] { display: none; }
-
-        textarea {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border);
-            border-radius: 12px; color: white; padding: 12px; min-height: 100px;
-            resize: none; outline: none; transition: 0.3s;
-        }
-        textarea:focus { border-color: var(--primary); }
-    </style>
 </head>
 <body class="dashboard-body">
 
@@ -57,118 +15,77 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <header class="app-header">
-        <button onclick="window.location.href='perfil.html'" style="position: absolute; left: 20px; background: none; border: none; color: white;">
-            <i data-lucide="chevron-left"></i>
-        </button>
-        <span class="app-brand">AJUSTES</span>
-    </header>
+    <main class="fade-in" style="padding: 20px; max-width: 500px; margin: 0 auto;">
+        <div class="glass-card">
+            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i data-lucide="settings-2" style="color: var(--primary);"></i>
+                Personalizar
+            </h2>
 
-    <main class="edit-container fade-in">
-        
-        <div class="id-lock-box">
-            <div class="id-lock-info">
-                <span>Identidade Global (HUB_ID)</span>
-                <strong id="readonly-id">HUB_00000000</strong>
-            </div>
-            <i data-lucide="lock" class="lock-icon"></i>
-        </div>
-
-        <div class="glass-card" style="padding: 25px;">
-            <h3 style="font-size: 0.8rem; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px;">VISUAL E MÍDIA</h3>
-            
-            <div class="upload-row">
-                <label class="upload-card">
-                    <i data-lucide="user-circle"></i>
-                    <span>Foto</span>
-                    <input type="file" id="up-avatar" accept="image/*">
-                    <img id="pre-avatar" class="preview-img">
-                </label>
-                <label class="upload-card">
-                    <i data-lucide="image"></i>
-                    <span>Banner</span>
-                    <input type="file" id="up-banner" accept="image/*">
-                    <img id="pre-banner" class="preview-img">
-                </label>
-            </div>
-
-            <h3 style="font-size: 0.8rem; color: var(--primary); margin: 20px 0 15px; letter-spacing: 1px;">INFORMAÇÕES</h3>
-
-            <div class="input-field">
-                <label>Nome de Exibição</label>
-                <div class="field-container">
-                    <i data-lucide="type" class="field-icon"></i>
-                    <input type="text" id="in-name" placeholder="Seu nome">
+            <form id="editForm">
+                <div class="input-field">
+                    <label>Nome de Exibição</label>
+                    <div class="field-container">
+                        <input type="text" id="editName" required>
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-field">
-                <label>Bio do Perfil</label>
-                <textarea id="in-bio" placeholder="Escreva algo sobre você..."></textarea>
-            </div>
+                <div class="input-field">
+                    <label>Bio (Sua descrição)</label>
+                    <div class="field-container">
+                        <textarea id="editBio" style="width: 100%; background: none; border: none; color: white; padding: 15px; font-size: 0.9rem; min-height: 80px; resize: none;"></textarea>
+                    </div>
+                </div>
 
-            <button class="cta-button" onclick="saveChanges()" style="margin-top: 10px;">
-                <i data-lucide="check"></i>
-                <span>Salvar Alterações</span>
-            </button>
+                <div class="input-field">
+                    <label>Link da Foto (URL)</label>
+                    <div class="field-container">
+                        <input type="text" id="editImg" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label>ID HUB (Não editável)</label>
+                    <div class="field-container" style="opacity: 0.6; background: rgba(0,0,0,0.2);">
+                        <i data-lucide="lock" class="field-icon"></i>
+                        <input type="text" id="staticID" readonly>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="window.location.href='perfil.html'" class="cta-button" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); box-shadow: none;">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="cta-button">
+                        Salvar
+                    </button>
+                </div>
+            </form>
         </div>
-
     </main>
-
-    <nav class="bottom-nav">
-        <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="home"></i>
-            <span>Início</span>
-        </button>
-        <button class="nav-item active" onclick="window.location.href='perfil.html'">
-            <i data-lucide="user"></i>
-            <span>Perfil</span>
-        </button>
-    </nav>
 
     <script>
         lucide.createIcons();
 
-        // Carrega os dados existentes
         const data = JSON.parse(localStorage.getItem("profile"));
-
+        
         if(data) {
-            document.getElementById('readonly-id').textContent = data.hubID;
-            document.getElementById('in-name').value = data.name;
-            document.getElementById('in-bio').value = data.bio || "";
+            document.getElementById('editName').value = data.name;
+            document.getElementById('editBio').value = data.bio || "";
+            document.getElementById('editImg').value = data.img || "";
+            document.getElementById('staticID').value = data.hubID; // Mostra o ID clássico
         }
 
-        // Previews de imagem
-        function setupUpload(inputId, imgId, dataKey) {
-            document.getElementById(inputId).onchange = e => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    data[dataKey] = reader.result;
-                    const preview = document.getElementById(imgId);
-                    preview.src = reader.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            };
-        }
-
-        setupUpload('up-avatar', 'pre-avatar', 'img');
-        setupUpload('up-banner', 'pre-banner', 'banner');
-
-        function saveChanges() {
-            data.name = document.getElementById('in-name').value;
-            data.bio = document.getElementById('in-bio').value;
-
-            localStorage.setItem("profile", JSON.stringify(data));
+        document.getElementById('editForm').onsubmit = function(e) {
+            e.preventDefault();
+            data.name = document.getElementById('editName').value;
+            data.bio = document.getElementById('editBio').value;
+            data.img = document.getElementById('editImg').value;
             
-            const btn = document.querySelector('.cta-button');
-            btn.style.background = "var(--success)";
-            btn.innerHTML = "<span>Alterações Salvas!</span>";
-
-            setTimeout(() => {
-                window.location.href = 'perfil.html';
-            }, 800);
-        }
+            localStorage.setItem("profile", JSON.stringify(data));
+            alert("Perfil atualizado com sucesso!");
+            window.location.href = 'perfil.html';
+        };
     </script>
 </body>
 </html>
