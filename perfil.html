@@ -3,159 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil | HTML HUB</title>
+    <title>Perfil | Hub Premium</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos específicos para o novo Perfil */
+        /* Estilos Exclusivos da Página de Perfil */
         body { display: block; overflow-y: auto; padding-bottom: 110px; }
         
-        .profile-container {
+        .profile-wrapper {
             max-width: 500px;
             margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        /* HEADER DO PERFIL (Banner + Avatar) */
+        .profile-header {
             position: relative;
+            background: var(--glass-bg);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
             animation: slideUp 0.6s ease-out;
         }
 
-        /* HEADER DO SITE */
-        .app-header {
-            padding: 20px;
-            text-align: center;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        /* CARD DE PERFIL */
-        .profile-card-main {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .banner-wrapper {
+        .banner-container {
             height: 160px;
-            background: linear-gradient(135deg, #1e293b, #4f46e5);
+            background: linear-gradient(45deg, var(--primary), #a855f7);
             background-size: cover;
             background-position: center;
-            position: relative;
+            transition: 0.5s;
         }
 
         .avatar-container {
-            position: relative;
-            margin-top: -50px;
-            padding: 0 25px;
-            display: flex;
-            align-items: flex-end;
-            gap: 15px;
+            position: absolute;
+            left: 20px;
+            top: 110px;
+            z-index: 2;
         }
 
-        .avatar-frame {
+        .avatar-main {
             width: 100px;
             height: 100px;
-            border-radius: 28px;
+            border-radius: 30px;
             border: 5px solid var(--bg-dark);
             background: #000;
-            overflow: hidden;
-            position: relative;
+            object-fit: cover;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
 
-        .avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        .status-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: 3px solid #000;
-        }
-        .status-badge.online { background: #10b981; box-shadow: 0 0 10px #10b981; }
-        .status-badge.offline { background: #64748b; }
-
-        /* INFO TEXT */
-        .profile-info-box {
-            padding: 20px 25px;
+        .info-section {
+            padding: 60px 20px 25px;
+            text-align: left;
         }
 
         .name-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 2px;
+            gap: 10px;
         }
 
-        .full-name { font-size: 1.5rem; font-weight: 800; color: #fff; }
-        .status-tag { 
-            font-size: 0.65rem; 
-            padding: 2px 8px; 
-            border-radius: 20px; 
-            background: rgba(255,255,255,0.1);
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+        .status-dot.offline { background: #64748b; box-shadow: none; }
+
+        .username-handle {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .creation-date {
+            font-size: 0.75rem;
             color: var(--text-dim);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .username-handle { color: var(--primary); font-weight: 600; font-size: 0.9rem; display: block; }
-        
-        .creation-date { 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            font-size: 0.75rem; 
-            color: var(--text-dim); 
+            display: flex;
+            align-items: center;
+            gap: 5px;
             margin-top: 12px;
         }
 
-        .bio-text {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #cbd5e1;
+        /* CARD DE BIO */
+        .bio-card {
+            margin-top: 20px;
+            padding: 20px !important;
+            animation: slideUp 0.8s ease-out;
         }
 
         /* BOTÃO EDITAR */
         .edit-trigger {
-            margin: 20px 25px;
-            background: var(--primary);
+            margin-top: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
             color: white;
-            border: none;
             padding: 12px;
             border-radius: 15px;
-            font-weight: 700;
-            width: calc(100% - 50px);
-            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            cursor: pointer;
             transition: 0.3s;
         }
-        .edit-trigger:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .edit-trigger:hover { background: var(--primary); border-color: var(--primary); }
 
-        /* MODAL MELHORADO */
-        .modal-content-plus {
-            background: #1e293b;
-            border-radius: 25px;
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            border: 1px solid var(--glass-border);
-            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* MODAL DE EDIÇÃO MELHORADO */
+        .edit-form-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        .input-group-edit { margin-bottom: 15px; }
-        .input-group-edit label { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 5px; display: block; }
+        .file-input-label {
+            display: block;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border: 1px dashed var(--text-dim);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes modalPop { from { opacity: 0; scale: 0.9; } to { opacity: 1; scale: 1; } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="dashboard-body">
@@ -165,39 +146,87 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <header class="app-header">HTML HUB</header>
+    <div class="app profile-wrapper">
+        <header style="text-align: center; margin-bottom: 25px;">
+            <h2 style="font-weight: 900; letter-spacing: 1px; color: white;">HUB PROFILE</h2>
+        </header>
 
-    <div class="profile-container">
-        <div class="profile-card-main">
-            <div class="banner-wrapper" id="viewBanner"></div>
-
+        <div class="profile-header">
+            <div class="banner-container" id="viewBanner"></div>
+            
             <div class="avatar-container">
-                <div class="avatar-frame">
-                    <img id="viewImg" src="">
-                    <div id="statusIndicator" class="status-badge online"></div>
-                </div>
+                <img id="viewAvatar" class="avatar-main" src="">
             </div>
 
-            <div class="profile-info-box">
+            <div class="info-section">
                 <div class="name-row">
-                    <span class="full-name" id="viewName">Nome de Usuário</span>
-                    <span class="status-tag" id="viewStatusText">Online</span>
+                    <h1 id="viewName">Carregando...</h1>
+                    <div id="viewStatus" class="status-dot"></div>
                 </div>
                 <span class="username-handle" id="viewHandle">@usuario</span>
                 
-                <div class="bio-text" id="viewBio">Sua bio aparecerá aqui. Conte um pouco sobre você.</div>
+                <div id="viewBio" style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">
+                    Sua bio aparecerá aqui...
+                </div>
 
                 <div class="creation-date">
                     <i data-lucide="calendar" size="14"></i>
-                    <span>Conta criada em: </span>
-                    <strong id="viewDate">20 de Dezembro, 2025</strong>
+                    Criado em: <span id="viewDate">01/01/2025</span>
                 </div>
-            </div>
 
-            <button class="edit-trigger" onclick="openEditModal()">
-                <i data-lucide="edit-3" size="18"></i>
-                Editar Perfil
-            </button>
+                <button class="edit-trigger" onclick="openEditModal()">
+                    <i data-lucide="edit-3" size="18"></i>
+                    Editar Perfil
+                </button>
+            </div>
+        </div>
+
+        <div class="glass-card bio-card" style="display: flex; justify-content: space-around; text-align: center;">
+            <div>
+                <h4 style="color:white">12</h4>
+                <p style="font-size:0.7rem">PROJETOS</p>
+            </div>
+            <div style="width: 1px; background: var(--glass-border);"></div>
+            <div>
+                <h4 style="color:white">PRO</h4>
+                <p style="font-size:0.7rem">PLANO</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="color:white">Personalizar Perfil</h3>
+                <i data-lucide="x" style="cursor:pointer" onclick="closeModal()"></i>
+            </div>
+            
+            <div class="edit-form-grid">
+                <div class="input-field">
+                    <label>Nome de Exibição</label>
+                    <input type="text" id="inputName">
+                </div>
+
+                <div class="input-field">
+                    <label>Bio (Frase curta)</label>
+                    <textarea id="inputBio" style="min-height: 80px;"></textarea>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <label class="file-input-label">
+                        <i data-lucide="image" size="16"></i> Foto
+                        <input type="file" id="inputAvatar" hidden accept="image/*">
+                    </label>
+                    <label class="file-input-label">
+                        <i data-lucide="layout" size="16"></i> Banner
+                        <input type="file" id="inputBanner" hidden accept="image/*">
+                    </label>
+                </div>
+
+                <button class="cta-button" onclick="saveChanges()">
+                    Salvar Tudo
+                </button>
+            </div>
         </div>
     </div>
 
@@ -212,65 +241,37 @@
         </button>
     </nav>
 
-    <div class="modal" id="editModal">
-        <div class="modal-content-plus">
-            <h2 style="margin-bottom: 20px;">Editar Perfil</h2>
-            
-            <div class="input-group-edit">
-                <label>Nome Exibido</label>
-                <input type="text" id="editName" placeholder="Seu nome">
-            </div>
-
-            <div class="input-group-edit">
-                <label>Sua Bio</label>
-                <textarea id="editBio" placeholder="Escreva sobre você..."></textarea>
-            </div>
-
-            <div class="input-group-edit">
-                <label>Foto de Perfil</label>
-                <input type="file" id="inputImg" accept="image/*">
-            </div>
-
-            <div class="input-group-edit">
-                <label>Imagem do Banner</label>
-                <input type="file" id="inputBanner" accept="image/*">
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn alt" style="flex:1" onclick="closeModal()">Cancelar</button>
-                <button class="btn" style="flex:2" onclick="saveData()">Salvar Alterações</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         lucide.createIcons();
 
-        // Dados Iniciais ou LocalStorage
-        let userData = JSON.parse(localStorage.getItem("userProfile")) || {
-            name: "Kauê Machado",
-            handle: "@kaue_dev",
-            bio: "Apaixonado por tecnologia e design minimalista.",
-            img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue",
+        // Carregar dados ou definir padrão
+        let userData = JSON.parse(localStorage.getItem('userData')) || {
+            name: "Seu Nome",
+            handle: "@" + (localStorage.getItem('lastUser') || "usuario"),
+            bio: "Entusiasta de tecnologia e design.",
+            avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Kaue",
             banner: "",
-            created: "20 de Dezembro, 2025"
+            created: new Date().toLocaleDateString('pt-BR')
         };
 
-        function render() {
+        function updateUI() {
             document.getElementById('viewName').textContent = userData.name;
+            document.getElementById('viewHandle').textContent = userData.handle;
             document.getElementById('viewBio').textContent = userData.bio;
-            document.getElementById('viewHandle').textContent = `@${userData.name.toLowerCase().replace(/\s/g, '_')}`;
-            document.getElementById('viewImg').src = userData.img;
+            document.getElementById('viewAvatar').src = userData.avatar;
             document.getElementById('viewDate').textContent = userData.created;
             
             const banner = document.getElementById('viewBanner');
-            banner.style.backgroundImage = userData.banner ? `url(${userData.banner})` : "linear-gradient(135deg, #1e293b, #4f46e5)";
+            banner.style.backgroundImage = userData.banner ? `url(${userData.banner})` : "";
+            
+            // Status Online Simulado
+            const dot = document.getElementById('viewStatus');
+            dot.className = navigator.onLine ? "status-dot" : "status-dot offline";
         }
 
-        // Funções de Modal
         function openEditModal() {
-            document.getElementById('editName').value = userData.name;
-            document.getElementById('editBio').value = userData.bio;
+            document.getElementById('inputName').value = userData.name;
+            document.getElementById('inputBio').value = userData.bio;
             document.getElementById('editModal').classList.add('show');
         }
 
@@ -278,45 +279,40 @@
             document.getElementById('editModal').classList.remove('show');
         }
 
-        function saveData() {
-            userData.name = document.getElementById('editName').value;
-            userData.bio = document.getElementById('editBio').value;
-            localStorage.setItem("userProfile", JSON.stringify(userData));
-            render();
+        // Processar Imagens
+        function handleImage(inputId, dataKey) {
+            document.getElementById(inputId).onchange = e => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    userData[dataKey] = reader.result;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            };
+        }
+
+        handleImage('inputAvatar', 'avatar');
+        handleImage('inputBanner', 'banner');
+
+        function saveChanges() {
+            userData.name = document.getElementById('inputName').value;
+            userData.bio = document.getElementById('inputBio').value;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            updateUI();
             closeModal();
-            lucide.createIcons();
-        }
-
-        // Leitura de Imagens
-        document.getElementById('inputImg').onchange = e => {
-            const r = new FileReader();
-            r.onload = () => { userData.img = r.result; };
-            r.readAsDataURL(e.target.files[0]);
-        };
-
-        document.getElementById('inputBanner').onchange = e => {
-            const r = new FileReader();
-            r.onload = () => { userData.banner = r.result; };
-            r.readAsDataURL(e.target.files[0]);
-        };
-
-        // Status em tempo real
-        function checkStatus() {
-            const isOnline = navigator.onLine;
-            const dot = document.getElementById('statusIndicator');
-            const txt = document.getElementById('viewStatusText');
             
-            dot.className = `status-badge ${isOnline ? 'online' : 'offline'}`;
-            txt.textContent = isOnline ? "Online" : "Offline";
-            txt.style.color = isOnline ? "#10b981" : "#64748b";
+            // Feedback visual
+            const btn = document.querySelector('.edit-trigger');
+            btn.innerHTML = "Perfil Atualizado!";
+            setTimeout(() => { 
+                btn.innerHTML = `<i data-lucide="edit-3" size="18"></i> Editar Perfil`;
+                lucide.createIcons();
+            }, 2000);
         }
 
-        window.addEventListener('online', checkStatus);
-        window.addEventListener('offline', checkStatus);
-
-        // Início
-        render();
-        checkStatus();
+        // Inicializar
+        updateUI();
+        window.addEventListener('online', updateUI);
+        window.addEventListener('offline', updateUI);
     </script>
 </body>
 </html>
