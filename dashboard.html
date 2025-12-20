@@ -3,9 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel | HTML HUB</title>
+    <title>Dashboard | Rede HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos para a Lista de Usuários */
+        .network-section { margin-top: 30px; }
+        .section-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 15px; padding: 0 5px;
+        }
+        .section-header h3 { font-size: 0.9rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; }
+        .online-count { font-size: 0.65rem; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 10px; border-radius: 50px; }
+
+        .user-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .user-card-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            border-radius: 18px;
+            transition: 0.3s;
+        }
+        .user-card-item:hover { background: rgba(255, 255, 255, 0.06); transform: translateX(5px); }
+
+        .user-info-mini { display: flex; align-items: center; gap: 12px; }
+        .user-avatar-mini { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--primary); }
+        .user-details-mini strong { display: block; font-size: 0.85rem; color: white; }
+        .user-details-mini span { font-size: 0.7rem; color: var(--primary); font-family: monospace; font-weight: 700; }
+
+        .status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+
+        /* Banner de Boas-vindas Alpha */
+        .alpha-banner {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid var(--primary);
+            padding: 25px; border-radius: 25px; margin-bottom: 25px;
+            position: relative; overflow: hidden;
+        }
+        .alpha-banner i { position: absolute; right: -10px; bottom: -10px; width: 100px; height: 100px; opacity: 0.1; transform: rotate(-15deg); }
+    </style>
 </head>
 <body class="dashboard-body">
 
@@ -14,66 +52,50 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <header class="top-bar glass-card" style="margin-bottom: 20px;">
-        <div class="brand-small">
-            <i data-lucide="layout-grid" class="highlight"></i>
-            <span>DASHBOARD</span>
+    <header class="top-bar-dash fade-in" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <div class="brand-mini">
+            <span style="font-weight: 900; letter-spacing: 2px;">HUB <span class="highlight">ALPHA</span></span>
         </div>
-        <div class="user-id-badge" id="hub-id-display">HUB_00000000</div>
+        <div id="user-id-top" style="font-family: monospace; font-size: 0.7rem; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 10px; color: var(--success); border: 1px solid var(--glass-border);">
+            HUB_XXXXXXXX
+        </div>
     </header>
 
-    <main class="content-container fade-in">
-        
-        <section class="welcome-banner" style="margin-bottom: 30px;">
-            <h1 style="font-size: 1.8rem;">Olá, <span id="user-greeting" class="highlight">Usuário</span>!</h1>
-            <p>Seja bem-vindo ao seu centro de controle.</p>
+    <main class="fade-in">
+        <section class="alpha-banner">
+            <i data-lucide="activity"></i>
+            <h2 style="font-size: 1.4rem;">Olá, <span id="dash-user-name">Usuário</span>!</h2>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 5px;">Seu terminal de acesso está ativo e seguro.</p>
         </section>
 
-        <div class="quick-actions" style="grid-template-columns: 1fr; gap: 15px;">
-            
-            <div class="glass-card detail-card" style="display: flex; align-items: center; gap: 20px; padding: 20px !important;">
-                <div class="avatar-ring online" style="width: 60px; height: 60px;">
-                    <img id="dash-avatar" src="" style="border-radius: 15px;">
-                </div>
-                <div style="text-align: left;">
-                    <h3 id="dash-name" style="font-size: 1rem; color: white;">Nome do Usuário</h3>
-                    <span id="dash-handle" style="font-size: 0.8rem; color: var(--primary);">@username</span>
-                </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="glass-card" style="padding: 15px; text-align: center;" onclick="window.location.href='perfil.html'">
+                <i data-lucide="user" style="color: var(--primary); margin-bottom: 8px;"></i>
+                <span style="display: block; font-size: 0.7rem; font-weight: 800;">MEU PERFIL</span>
             </div>
-
-            <div class="glass-card" style="padding: 20px !important; display: flex; justify-content: space-around; align-items: center;">
-                <button class="nav-item" onclick="window.location.href='perfil.html'">
-                    <i data-lucide="user-circle" style="color: var(--primary);"></i>
-                    <span style="font-size: 0.6rem; margin-top: 5px;">VER PERFIL</span>
-                </button>
-                <div style="width: 1px; height: 30px; background: var(--glass-border);"></div>
-                <button class="nav-item" onclick="window.location.href='editarperfil.html'">
-                    <i data-lucide="settings" style="color: var(--primary);"></i>
-                    <span style="font-size: 0.6rem; margin-top: 5px;">AJUSTES</span>
-                </button>
-            </div>
-
-        </div>
-
-        <div class="glass-card" style="margin-top: 20px; padding: 20px !important;">
-            <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-dim);">DADOS DA SESSÃO</h3>
-            <div class="info-row" style="flex-direction: column; gap: 10px; text-align: left;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                    <span style="color: var(--text-dim);">ID Único:</span>
-                    <strong id="info-id" style="color: var(--success);">---</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                    <span style="color: var(--text-dim);">Status:</span>
-                    <strong style="color: var(--primary);">CONECTADO</strong>
-                </div>
+            <div class="glass-card" style="padding: 15px; text-align: center;" onclick="window.location.href='editarperfil.html'">
+                <i data-lucide="shield" style="color: var(--secondary); margin-bottom: 8px;"></i>
+                <span style="display: block; font-size: 0.7rem; font-weight: 800;">SEGURANÇA</span>
             </div>
         </div>
 
+        <section class="network-section">
+            <div class="section-header">
+                <h3>REDE ATIVA</h3>
+                <span class="online-count" id="user-count">0 Membros</span>
+            </div>
+
+            <div class="user-list" id="global-user-list">
+                <div style="text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.8rem;">
+                    Buscando membros na rede...
+                </div>
+            </div>
+        </section>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="home"></i>
+        <button class="nav-item active">
+            <i data-lucide="layout-grid"></i>
             <span>Início</span>
         </button>
         <button class="nav-item" onclick="window.location.href='perfil.html'">
@@ -85,38 +107,53 @@
     <script>
         lucide.createIcons();
 
-        // Carregar dados reais do localStorage
         function initDashboard() {
             const data = JSON.parse(localStorage.getItem("profile"));
+            if (!data) { window.location.href = 'index.html'; return; }
 
-            if (data) {
-                // Preenche os campos com os dados do usuário
-                document.getElementById('user-greeting').textContent = data.name.split(' ')[0];
-                document.getElementById('hub-id-display').textContent = data.hubID;
-                document.getElementById('info-id').textContent = data.hubID;
-                document.getElementById('dash-name').textContent = data.name;
-                document.getElementById('dash-handle').textContent = `@${data.handle || 'usuario'}`;
-                document.getElementById('dash-avatar').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
-            } else {
-                // Se não houver dados, volta para o login
-                window.location.href = 'index.html';
-            }
+            // Atualiza dados do usuário logado
+            document.getElementById('dash-user-name').textContent = data.name.split(' ')[0];
+            document.getElementById('user-id-top').textContent = data.hubID;
+
+            loadNetworkUsers(data.hubID);
+        }
+
+        function loadNetworkUsers(myID) {
+            const listContainer = document.getElementById('global-user-list');
+            const countLabel = document.getElementById('user-count');
+            
+            // Simulação de Banco de Dados: No LocalStorage só temos 1 por vez normalmente.
+            // Para mostrar "Lista Real", vamos usar um array mockado + o seu usuário atual.
+            const mockUsers = [
+                { name: "Admin Master", hubID: "HUB_MASTER0", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" },
+                { name: "Sistema HUB", hubID: "HUB_SYSTEM4", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bot" }
+            ];
+
+            // Pegamos o seu usuário atual
+            const myUser = JSON.parse(localStorage.getItem("profile"));
+            if(myUser) mockUsers.unshift(myUser);
+
+            listContainer.innerHTML = ''; // Limpa a lista
+            countLabel.textContent = `${mockUsers.length} Membros`;
+
+            mockUsers.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'user-card-item';
+                card.innerHTML = `
+                    <div class="user-info-mini">
+                        <img src="${user.img}" class="user-avatar-mini">
+                        <div class="user-details-mini">
+                            <strong>${user.name}</strong>
+                            <span>${user.hubID}</span>
+                        </div>
+                    </div>
+                    <div class="status-dot"></div>
+                `;
+                listContainer.appendChild(card);
+            });
         }
 
         initDashboard();
     </script>
-
-    <style>
-        .user-id-badge {
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-weight: 800;
-            font-size: 0.8rem;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-    </style>
 </body>
 </html>
