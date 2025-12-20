@@ -1,290 +1,225 @@
-/* ==========================================================================
-   DESIGN SYSTEM - HTML HUB PREMIUM V4.0
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* HTML HUB - PALETA PREMIUM OWNER 
+    Colors: Deep Dark (#0a0a0c), Electric Orange (#ff7800), Gold (#ffb347)
+*/
 
 :root {
-    /* Cores Nucleares */
-    --primary: #6366f1;           /* Indigo Vibrant */
-    --primary-glow: rgba(99, 102, 241, 0.5);
-    --secondary: #a855f7;         /* Purple Accent */
-    --success: #10b981;           /* Emerald */
-    --danger: #ff4757;            /* Coral Red */
-    --warning: #f59e0b;           /* Amber */
-    
-    /* Cores de Fundo (Deep Dark) */
-    --bg-dark: #05070a;
-    --card-bg: rgba(13, 17, 23, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-highlight: rgba(255, 255, 255, 0.03);
-    
-    /* Tipografia e Raios */
-    --font-main: 'Plus Jakarta Sans', sans-serif;
-    --radius-xl: 32px;
-    --radius-lg: 20px;
-    --radius-md: 12px;
-    
-    /* Animações */
-    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    --bg-dark: #0a0b10;
+    --glass: rgba(15, 17, 26, 0.7);
+    --glass-border: rgba(255, 120, 0, 0.15);
+    --primary: #ff7800; /* Laranja Owner */
+    --secondary: #ffb347;
+    --primary-glow: rgba(255, 120, 0, 0.3);
+    --text-main: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.6);
+    --success: #10b981;
 }
 
-/* ==========================================================================
-   RESET & ESTRUTURA BASE
-   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-main);
-    outline: none;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: var(--bg-dark);
-    color: #ffffff;
-    min-height: 100vh;
+    color: var(--text-main);
     overflow-x: hidden;
-    line-height: 1.6;
+    min-height: 100vh;
 }
 
-/* Estilo para páginas com scroll e conteúdo centralizado */
-body.dashboard-body {
-    display: block;
-    padding: 20px 16px 120px; /* Padding extra embaixo para a barra */
-}
-
-/* ==========================================================================
-   BACKGROUND IMERSIVO (AURORA BOREALIS EFFECT)
-   ========================================================================== */
+/* --- FUNDO DINÂMICO --- */
 .background-wrapper {
     position: fixed;
     inset: 0;
-    z-index: -2;
-    background: radial-gradient(circle at 50% 50%, #0f172a 0%, #05070a 100%);
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(circle at top right, #1a120b, #0a0b10);
 }
 
 .glow-sphere {
     position: absolute;
+    width: 400px;
+    height: 400px;
+    background: var(--primary-glow);
+    filter: blur(100px);
     border-radius: 50%;
-    filter: blur(120px);
-    z-index: -1;
-    opacity: 0.3;
 }
 
 .glow-sphere.pulse {
-    width: 400px;
-    height: 400px;
     top: -100px;
-    right: -50px;
-    background: var(--primary);
-    animation: floating 10s infinite alternate ease-in-out;
+    right: -100px;
+    animation: pulse-glow 8s infinite alternate;
 }
 
-.glow-sphere.secondary {
-    width: 350px;
-    height: 350px;
-    bottom: -100px;
-    left: -50px;
-    background: var(--secondary);
-    animation: floating 12s infinite alternate-reverse ease-in-out;
+@keyframes pulse-glow {
+    from { opacity: 0.4; transform: scale(1); }
+    to { opacity: 0.7; transform: scale(1.2); }
 }
 
-@keyframes floating {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, 40px) scale(1.2); }
-}
-
-/* ==========================================================================
-   CARTÕES GLASSMORPHISM (ULTRA FIDELITY)
-   ========================================================================== */
+/* --- CARDS & GLASS --- */
 .glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
-    padding: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    position: relative;
-    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.glass-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+.fade-in {
+    animation: fadeInUp 0.8s ease forwards;
 }
 
-/* ==========================================================================
-   COMPONENTES DE UI - INPUTS & BUTTONS
-   ========================================================================== */
-.input-field { margin-bottom: 20px; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FORMULÁRIOS & INPUTS --- */
+.input-field {
+    margin-bottom: 20px;
+}
+
 .input-field label {
     display: block;
     font-size: 0.75rem;
     font-weight: 700;
     color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
     margin-bottom: 8px;
-    padding-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .field-container {
-    position: relative;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
-    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 0 15px;
+    transition: 0.3s;
 }
 
 .field-container:focus-within {
     border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    background: rgba(255, 120, 0, 0.05);
+    box-shadow: 0 0 15px var(--primary-glow);
 }
-
-.field-icon { margin-left: 15px; color: var(--text-dim); width: 18px !important; }
 
 .field-container input {
-    width: 100%;
     background: none;
     border: none;
-    padding: 14px 15px;
+    padding: 14px 10px;
     color: white;
+    width: 100%;
+    outline: none;
     font-size: 0.95rem;
 }
 
+.field-icon {
+    color: var(--primary);
+    width: 18px;
+}
+
+/* --- BOTÕES --- */
 .cta-button {
     width: 100%;
-    padding: 16px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border: none;
-    border-radius: var(--radius-md);
     color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
     font-weight: 800;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 8px 20px var(--primary-glow);
 }
 
-.cta-button:active { transform: scale(0.96); }
-.cta-button:hover { filter: brightness(1.15); transform: translateY(-2px); }
+.cta-button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 12px 25px var(--primary-glow);
+}
 
-/* ==========================================================================
-   PERFIL & IDENTIDADE VISUAL
-   ========================================================================== */
-.profile-main-card { padding: 0 !important; }
-
+/* --- COMPONENTES DE PERFIL --- */
 .banner-wrapper {
-    height: 180px;
-    background: #111;
-    position: relative;
+    height: 160px;
+    background: #15161c;
+    overflow: hidden;
 }
 
-.banner-img { width: 100%; height: 100%; background-size: cover; background-position: center; }
-
-.avatar-container { margin-top: -60px; padding-left: 24px; position: relative; z-index: 10; }
-
-.avatar-ring {
-    width: 110px; height: 110px;
-    border-radius: 35px;
-    padding: 5px;
-    background: var(--bg-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
+.banner-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.7);
 }
 
-.avatar-ring.online { border: 2px solid var(--success); box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
-.avatar-ring.offline { border: 2px solid var(--danger); }
-
-.avatar-ring img { width: 100%; height: 100%; border-radius: 30px; object-fit: cover; }
-
-.user-meta { padding: 20px 24px; }
-.name-status h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
-
-.status-indicator {
-    font-size: 0.6rem;
-    font-weight: 800;
-    padding: 4px 12px;
-    border-radius: 50px;
-    text-transform: uppercase;
-}
-
-.status-indicator.online { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-.status-indicator.offline { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-
-/* ==========================================================================
-   NAVEGAÇÃO INFERIOR (BOTTOM NAV)
-   ========================================================================== */
+/* --- NAVEGAÇÃO INFERIOR --- */
 .bottom-nav {
     position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 32px);
-    max-width: 400px;
+    bottom: 0;
+    left: 0;
+    right: 0;
     height: 75px;
-    background: rgba(13, 17, 23, 0.8);
+    background: rgba(10, 11, 16, 0.8);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    z-index: 1000;
+    border-top: 1px solid var(--glass-border);
+    z-index: 100;
+    padding-bottom: 10px;
 }
 
 .nav-item {
-    background: none; border: none;
-    color: rgba(255, 255, 255, 0.4);
-    display: flex; flex-direction: column;
-    align-items: center; gap: 4px;
-    cursor: pointer; transition: var(--transition);
-    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.nav-item i { width: 22px; transition: var(--transition); }
-.nav-item span { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px; }
+.nav-item i { width: 22px; transition: 0.3s; }
+.nav-item span { font-size: 0.65rem; font-weight: 700; }
 
-.nav-item.active { color: var(--primary); }
-.nav-item.active i { transform: translateY(-5px); filter: drop-shadow(0 0 8px var(--primary-glow)); }
-
-/* ==========================================================================
-   ANIMAÇÕES & AUXILIARES
-   ========================================================================== */
-.fade-in { animation: fadeIn 0.8s var(--transition) forwards; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.nav-item.active {
+    color: var(--primary);
 }
 
+.nav-item.active i {
+    transform: translateY(-5px);
+    filter: drop-shadow(0 0 8px var(--primary-glow));
+}
+
+/* --- UTILITÁRIOS --- */
 .highlight {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--primary-glow);
 }
 
-/* Estilo para Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+.status-indicator.online {
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+}
 
-/* Responsividade para Telas Pequenas */
-@media (max-width: 380px) {
-    .glass-card { padding: 18px; }
-    .avatar-ring { width: 90px; height: 90px; }
-    .name-status h2 { font-size: 1.3rem; }
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
 }
