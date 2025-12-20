@@ -3,63 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil HUB | Identidade</title>
+    <title>Perfil HUB | Identidade Digital</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos específicos para as métricas sociais */
-        .social-stats {
+        /* Melhorias exclusivas de Layout */
+        .profile-layout { max-width: 500px; margin: 0 auto; padding-bottom: 120px; }
+        
+        /* Stats Section */
+        .stats-container {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-            padding: 15px 0;
+            justify-content: space-around;
+            padding: 20px 0;
+            margin: 15px 0;
             border-top: 1px solid var(--glass-border);
             border-bottom: 1px solid var(--glass-border);
         }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
+        .stat-item { text-align: center; cursor: pointer; transition: 0.3s; }
         .stat-item:hover { transform: translateY(-3px); }
+        .stat-value { display: block; font-size: 1.2rem; font-weight: 800; color: white; }
+        .stat-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
 
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: white;
+        /* Badge de Verificado Próximo ao Nome */
+        .name-wrapper { display: flex; align-items: center; gap: 8px; justify-content: center; }
+        .verified-badge { color: var(--primary); width: 20px; height: 20px; }
+
+        /* Estilo do ID HUB Refinado */
+        .hub-identity-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border-radius: 16px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 24px;
+            border: 1px solid var(--glass-border);
         }
-
-        .stat-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2px;
+        .hub-id-text { font-family: 'monospace'; color: var(--success); font-weight: 700; font-size: 0.95rem; }
+        
+        /* Grid de Destaques */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 24px;
+            margin-top: 20px;
         }
-
-        .hub-id-display-box {
-            margin: 15px auto !important;
-        }
-
-        /* Botão de Logout com Estilo Reduzido para não poluir */
-        .logout-mini {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            padding: 8px;
+        .highlight-item {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.03);
             border-radius: 12px;
-            cursor: pointer;
-            z-index: 100;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            transition: 0.3s;
         }
+        .highlight-item:hover { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+
+        .btn-group { display: flex; flex-direction: column; gap: 10px; padding: 0 24px; margin-top: 25px; }
     </style>
 </head>
 <body class="dashboard-body">
@@ -69,93 +72,79 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <button class="logout-mini" onclick="window.location.href='logout.html'" title="Sair">
-        <i data-lucide="log-out" style="width: 18px;"></i>
-    </button>
-
-    <header class="app-header">
-        <span class="app-brand">PERFIL <span class="highlight">HUB</span></span>
-    </header>
-
     <main class="profile-layout fade-in">
         
-        <div class="glass-card profile-main-card">
-            <div class="banner-wrapper">
+        <div class="glass-card" style="padding: 0; padding-bottom: 25px; overflow: hidden;">
+            <div class="banner-wrapper" style="height: 160px;">
                 <div id="profileBanner" class="banner-img"></div>
-                <div class="banner-overlay"></div>
+                <div class="banner-overlay" style="background: linear-gradient(to bottom, transparent, rgba(5,7,10,0.8));"></div>
             </div>
 
-            <div class="avatar-container">
-                <div class="avatar-ring" id="statusRing">
-                    <img id="profileImg" src="" alt="Avatar">
+            <div class="avatar-container" style="margin-top: -55px; display: flex; justify-content: center; padding-left: 0;">
+                <div class="avatar-ring" id="statusRing" style="width: 120px; height: 120px; border-radius: 40px;">
+                    <img id="profileImg" src="" style="border-radius: 35px;">
                 </div>
             </div>
 
-            <div class="user-meta">
-                <div class="name-status">
-                    <h2 id="profileName">Carregando...</h2>
-                    <span id="statusBadge" class="status-indicator">Online</span>
+            <div class="user-meta" style="text-align: center; padding-top: 15px;">
+                <div class="name-wrapper">
+                    <h2 id="profileName" style="font-size: 1.5rem;">Nome do Usuário</h2>
+                    <i data-lucide="badge-check" class="verified-badge"></i>
                 </div>
+                <p id="profileHandle" style="color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 10px;">@username</p>
+                
+                <p id="profileBio" style="font-size: 0.85rem; color: #ccc; max-width: 80%; margin: 0 auto 15px;">A carregar a tua bio personalizada do sistema HUB...</p>
 
-                <span class="user-handle" id="profileHandle">@usuario</span>
-
-                <div class="social-stats">
+                <div class="stats-container">
                     <div class="stat-item">
-                        <span class="stat-value" id="count-following">124</span>
+                        <span class="stat-value">1.2k</span>
+                        <span class="stat-label">Seguidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">482</span>
                         <span class="stat-label">Seguindo</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="count-followers">8.5k</span>
-                        <span class="stat-label">Seguidores</span>
+                        <span class="stat-value">15</span>
+                        <span class="stat-label">Projetos</span>
                     </div>
-                </div>
-
-                <div class="hub-id-display-box">
-                    <div class="hub-id-content">
-                        <span class="hub-tag">ID OFICIAL</span>
-                        <span id="displayHubID" class="hub-number">HUB_00000000</span>
-                    </div>
-                    <button class="copy-id-btn" onclick="copyID()">
-                        <i data-lucide="copy"></i>
-                    </button>
-                </div>
-                
-                <p class="user-bio" id="profileBio">A carregar biografia...</p>
-
-                <div class="account-date" style="justify-content: center; margin-top: 15px;">
-                    <i data-lucide="calendar" style="width: 14px;"></i>
-                    <span style="font-size: 0.75rem;">Membro desde <span id="creationDate">--/--/----</span></span>
                 </div>
             </div>
 
-            <div class="profile-actions" style="padding: 0 24px 24px;">
+            <div class="hub-identity-card">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i data-lucide="fingerprint" style="color: var(--text-dim); width: 18px;"></i>
+                    <span id="displayHubID" class="hub-id-text">HUB_00000000</span>
+                </div>
+                <button class="copy-btn" onclick="copyID()" style="background:none; border:none; color:var(--primary); cursor:pointer;">
+                    <i data-lucide="copy" style="width: 18px;"></i>
+                </button>
+            </div>
+
+            <div class="btn-group">
                 <button class="cta-button" onclick="window.location.href='editarperfil.html'">
-                    <i data-lucide="settings-2"></i>
+                    <i data-lucide="edit-3"></i>
                     <span>Editar Perfil</span>
+                </button>
+                <button class="cta-button" onclick="window.location.href='logout.html'" style="background: rgba(255,255,255,0.05); box-shadow: none; border: 1px solid var(--glass-border); color: var(--danger);">
+                    <i data-lucide="log-out"></i>
+                    <span>Sair da Conta</span>
                 </button>
             </div>
         </div>
 
-        <div class="glass-card detail-card" style="margin-top: 15px; padding: 20px !important;">
-            <div class="info-row">
-                <div class="info-box">
-                    <i data-lucide="award" style="color: #f59e0b; margin-bottom: 5px;"></i>
-                    <strong>Pioneer</strong>
-                    <span>Badge</span>
-                </div>
-                <div class="info-box">
-                    <i data-lucide="check-circle" style="color: var(--success); margin-bottom: 5px;"></i>
-                    <strong>Ativo</strong>
-                    <span>Conta</span>
-                </div>
-            </div>
+        <h3 style="padding: 20px 24px 10px; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Conquistas</h3>
+        <div class="highlights-grid">
+            <div class="highlight-item"><i data-lucide="award"></i></div>
+            <div class="highlight-item"><i data-lucide="code-2"></i></div>
+            <div class="highlight-item"><i data-lucide="shield-check"></i></div>
         </div>
 
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="home"></i>
+            <i data-lucide="layout-grid"></i>
             <span>Início</span>
         </button>
         <button class="nav-item active" onclick="window.location.href='perfil.html'">
@@ -167,36 +156,40 @@
     <script>
         lucide.createIcons();
 
-        function loadProfileData() {
+        function initProfile() {
             const data = JSON.parse(localStorage.getItem("profile"));
-
-            if (!data) {
-                window.location.href = 'index.html';
-                return;
-            }
+            if (!data) { window.location.href = 'index.html'; return; }
 
             document.getElementById('profileName').textContent = data.name;
-            document.getElementById('displayHubID').textContent = data.hubID || "HUB_ERROR";
-            document.getElementById('profileHandle').textContent = `@${data.handle || 'usuario'}`;
-            document.getElementById('profileBio').textContent = data.bio || "Explorando o ecossistema HTML HUB.";
-            document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
-            document.getElementById('creationDate').textContent = data.created || "20/12/2025";
+            document.getElementById('profileHandle').textContent = `@${data.handle}`;
+            document.getElementById('displayHubID').textContent = data.hubID;
+            document.getElementById('profileBio').textContent = data.bio || "Membro verificado do ecossistema HTML HUB.";
+            document.getElementById('profileImg').src = data.img || `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.name}`;
             
-            // Gerar números aleatórios para seguidores se não existirem (simulação)
-            document.getElementById('count-following').textContent = data.following || Math.floor(Math.random() * 500) + 50;
-            document.getElementById('count-followers').textContent = data.followers || (Math.random() * 10).toFixed(1) + "k";
-
-            const banner = document.getElementById('profileBanner');
-            banner.style.backgroundImage = data.banner ? `url(${data.banner})` : "linear-gradient(135deg,#2b3170,#4f7cff)";
+            if(data.banner) {
+                document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
+            }
         }
 
         function copyID() {
-            const idText = document.getElementById('displayHubID').textContent;
-            navigator.clipboard.writeText(idText);
-            alert("ID HUB copiado com sucesso!");
+            const id = document.getElementById('displayHubID').textContent;
+            navigator.clipboard.writeText(id);
+            alert("ID HUB Copiado com sucesso!");
         }
 
-        loadProfileData();
+        // Simulação de Online
+        function checkStatus() {
+            const ring = document.getElementById('statusRing');
+            if(navigator.onLine) {
+                ring.classList.add('online');
+            } else {
+                ring.classList.remove('online');
+                ring.style.border = "2px solid #555";
+            }
+        }
+
+        initProfile();
+        checkStatus();
     </script>
 </body>
 </html>
