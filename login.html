@@ -3,74 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | HUB Alpha</title>
+    <title>Acesso HUB | Alpha</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos Exclusivos para a Nova Experiência de Login */
-        .auth-card-premium {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 28px;
-            background: rgba(10, 12, 18, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .system-status {
+        .auth-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.65rem;
-            color: var(--success);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            background: rgba(16, 185, 129, 0.1);
-            padding: 6px 12px;
-            border-radius: 50px;
-            width: fit-content;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .pulse-dot {
-            width: 6px; height: 6px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse-green 1.5s infinite;
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes pulse-green {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        .input-group-modern {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            margin-bottom: 15px;
-            transition: 0.3s;
-        }
-
-        .input-group-modern:focus-within {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .login-type-toggle {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: rgba(0, 0, 0, 0.2);
+        /* Indicador de Modo (Login/Registro) */
+        .mode-selector {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
             padding: 5px;
             border-radius: 14px;
             margin-bottom: 30px;
+            border: 1px solid var(--glass-border);
         }
 
-        .toggle-btn {
+        .mode-btn {
+            flex: 1;
             padding: 10px;
             border: none;
             background: none;
@@ -82,148 +47,145 @@
             transition: 0.3s;
         }
 
-        .toggle-btn.active {
+        .mode-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn-scan {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
-            padding: 18px;
-            border-radius: 18px;
-            color: white;
-            font-weight: 800;
-            width: 100%;
-            display: flex;
+        .system-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px var(--primary-glow);
-            transition: 0.3s;
+            gap: 6px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
-        .btn-scan:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .status-pulse {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse-violet 1.5s infinite;
+        }
+
+        @keyframes pulse-violet {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
     </style>
 </head>
-<body class="dashboard-body" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+<body class="dashboard-body">
 
     <div class="background-wrapper">
         <div class="glow-sphere pulse"></div>
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <main class="auth-card-premium fade-in">
-        <div class="system-status">
-            <div class="pulse-dot"></div>
-            Servidor Online: Alpha_01
-        </div>
-
-        <div style="margin-bottom: 30px;">
-            <h1 style="font-size: 1.8rem; font-weight: 900;">Acesso à <span class="highlight">Rede</span></h1>
-            <p style="color: var(--text-dim); font-size: 0.85rem;">Insira seu ID Alfanumérico ou nome de usuário.</p>
-        </div>
-
-        <div class="login-type-toggle">
-            <button class="toggle-btn active" id="btn-login-mode" onclick="switchMode(true)">Entrar</button>
-            <button class="toggle-btn" id="btn-reg-mode" onclick="switchMode(false)">Novo ID</button>
-        </div>
-
-        <form id="accessForm">
-            <div class="input-group-modern">
-                <div style="display: flex; align-items: center; padding: 0 15px;">
-                    <i data-lucide="hash" style="width: 18px; color: var(--primary);"></i>
-                    <input type="text" id="credential" placeholder="Ex: HUB_WBXPWHC9 ou Nome" required 
-                           style="background: none; border: none; padding: 18px 12px; color: white; width: 100%;">
-                </div>
+    <main class="auth-wrapper">
+        <div class="glass-card auth-card fade-in">
+            
+            <div class="system-badge">
+                <div class="status-pulse"></div>
+                Sistema Alpha v.4
             </div>
 
-            <div class="input-group-modern">
-                <div style="display: flex; align-items: center; padding: 0 15px;">
-                    <i data-lucide="key-round" style="width: 18px; color: var(--primary);"></i>
-                    <input type="password" id="access_key" placeholder="Senha de segurança" required 
-                           style="background: none; border: none; padding: 18px 12px; color: white; width: 100%;">
-                </div>
+            <h1 id="auth-title" style="font-size: 1.8rem; font-weight: 900; margin-bottom: 5px;">Entrar</h1>
+            <p id="auth-subtitle" style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 25px;">Valide suas credenciais de acesso.</p>
+
+            <div class="mode-selector">
+                <button class="mode-btn active" id="mode-login" onclick="setMode(true)">Login</button>
+                <button class="mode-btn" id="mode-reg" onclick="setMode(false)">Registro</button>
             </div>
 
-            <button type="submit" class="btn-scan" id="mainActionBtn" style="margin-top: 20px;">
-                <span id="btn-text">Validar Acesso</span>
-                <i data-lucide="scan-eye"></i>
-            </button>
-        </form>
+            <form id="loginForm">
+                <div class="input-field">
+                    <label>Identificação</label>
+                    <div class="field-container">
+                        <i data-lucide="user" class="field-icon"></i>
+                        <input type="text" id="userInput" placeholder="Nome ou HUB_00000000" required>
+                    </div>
+                </div>
 
-        <p id="hint-text" style="text-align: center; margin-top: 25px; font-size: 0.75rem; color: var(--text-dim);">
-            Protocolo de segurança HUB V.4 habilitado.
-        </p>
+                <div class="input-field">
+                    <label>Chave de Segurança</label>
+                    <div class="field-container">
+                        <i data-lucide="key" class="field-icon"></i>
+                        <input type="password" id="passInput" placeholder="Sua senha" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="cta-button" style="margin-top: 10px;">
+                    <span id="btn-label">Acessar Terminal</span>
+                    <i data-lucide="shield-check"></i>
+                </button>
+            </form>
+
+            <p style="text-align: center; margin-top: 25px; font-size: 0.7rem; color: var(--text-dim); opacity: 0.5;">
+                Conexão criptografada via Protocolo Violet.
+            </p>
+        </div>
     </main>
 
     <script>
         lucide.createIcons();
 
-        let isLogin = true;
+        let isLoginMode = true;
 
-        function switchMode(login) {
-            isLogin = login;
-            document.getElementById('btn-login-mode').classList.toggle('active', login);
-            document.getElementById('btn-reg-mode').classList.toggle('active', !login);
+        function setMode(isLogin) {
+            isLoginMode = isLogin;
+            document.getElementById('mode-login').classList.toggle('active', isLogin);
+            document.getElementById('mode-reg').classList.toggle('active', !isLogin);
             
-            document.getElementById('btn-text').textContent = login ? "Validar Acesso" : "Gerar Identidade";
-            document.getElementById('credential').placeholder = login ? "Ex: HUB_WBXPWHC9 ou Nome" : "Escolha um nome de usuário";
+            document.getElementById('auth-title').textContent = isLogin ? "Entrar" : "Registrar";
+            document.getElementById('auth-subtitle').textContent = isLogin ? 
+                "Valide suas credenciais de acesso." : "Crie um novo ID clássico no sistema.";
+            document.getElementById('btn-label').textContent = isLogin ? 
+                "Acessar Terminal" : "Gerar Nova Conta";
             
             lucide.createIcons();
         }
 
-        // NOVO GERADOR ALFANUMÉRICO
-        function generateAlfanumericID() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let res = '';
-            for(let i=0; i<8; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
-            return `HUB_${res}`;
+        // Função para gerar o ID clássico HUB_00000000
+        function generateID() {
+            const rand = Math.floor(10000000 + Math.random() * 90000000);
+            return `HUB_${rand}`;
         }
 
-        document.getElementById('accessForm').onsubmit = function(e) {
+        document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
-            const cred = document.getElementById('credential').value;
-            const btn = document.getElementById('mainActionBtn');
-
-            btn.style.opacity = "0.7";
-            btn.innerHTML = "Escaneando...";
-
-            setTimeout(() => {
-                const storage = JSON.parse(localStorage.getItem("profile"));
-
-                if(!isLogin) {
-                    // MODO REGISTRO
-                    const newID = generateAlfanumericID();
-                    const profile = {
-                        name: cred,
-                        hubID: newID,
-                        handle: cred.toLowerCase().replace(/\s/g, '_'),
-                        bio: "Usuário validado via protocolo alfanumérico.",
-                        img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${cred}`,
-                        created: new Date().toLocaleDateString('pt-BR')
-                    };
-                    localStorage.setItem("profile", JSON.stringify(profile));
-                    alert(`ID GERADO: ${newID}\nGuarde-o para acesso futuro!`);
-                    switchMode(true);
+            const user = document.getElementById('userInput').value;
+            
+            if(!isLoginMode) {
+                // REGISTRO
+                const newID = generateID();
+                const profile = {
+                    name: user,
+                    hubID: newID,
+                    handle: user.toLowerCase().replace(/\s/g, ''),
+                    bio: "Novo membro da rede Alpha.",
+                    img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`,
+                    created: new Date().toLocaleDateString('pt-BR')
+                };
+                localStorage.setItem("profile", JSON.stringify(profile));
+                alert(`CONTA GERADA!\nSeu ID: ${newID}\n\nUse seu nome para logar.`);
+                setMode(true);
+            } else {
+                // LOGIN
+                const saved = JSON.parse(localStorage.getItem("profile"));
+                if(saved && (user === saved.name || user === saved.hubID)) {
+                    window.location.href = 'dashboard.html';
+                } else if (user === "admin") {
+                    window.location.href = 'dashboard.html';
                 } else {
-                    // MODO LOGIN
-                    if(storage && (cred === storage.name || cred === storage.hubID)) {
-                        window.location.href = 'dashboard.html';
-                    } else if (cred === "admin") {
-                        window.location.href = 'dashboard.html';
-                    } else {
-                        alert("ACESSO NEGADO: Identidade não localizada.");
-                    }
+                    alert("Credenciais inválidas ou ID não localizado.");
                 }
-                
-                btn.style.opacity = "1";
-                btn.innerHTML = `<span>${isLogin ? 'Validar Acesso' : 'Gerar Identidade'}</span> <i data-lucide="scan-eye"></i>`;
-                lucide.createIcons();
-            }, 1800);
-        }
+            }
+        };
     </script>
 </body>
 </html>
