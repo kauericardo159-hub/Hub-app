@@ -3,9 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Global | HTML HUB</title>
+    <title>Perfil Alpha | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos Exclusivos para a Identidade Alfanumérica */
+        .identity-card {
+            margin-top: -50px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .id-badge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .id-badge-container::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--primary), transparent 30%);
+            animation: rotate-border 6s linear infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        @keyframes rotate-border {
+            100% { transform: rotate(360deg); }
+        }
+
+        .id-label {
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .id-value {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--success);
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .copy-chip {
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .copy-chip:hover { background: var(--primary); color: white; }
+
+        .stat-grid-premium {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 10px;
+            border-radius: 18px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .stat-item i { width: 18px; color: var(--secondary); margin-bottom: 8px; }
+        .stat-item strong { display: block; font-size: 0.8rem; }
+        .stat-item span { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; }
+
+    </style>
 </head>
 <body class="dashboard-body">
 
@@ -14,82 +104,69 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <header class="app-header fade-in">
-        <span class="app-brand">HTML <span class="highlight">HUB</span></span>
-    </header>
-
     <main class="profile-layout">
         
-        <div class="glass-card profile-main-card fade-in" style="animation-delay: 0.1s;">
+        <div class="glass-card profile-main-card fade-in">
             <div class="banner-wrapper">
                 <div id="profileBanner" class="banner-img"></div>
-                <div class="banner-glow"></div>
+                <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg-dark));"></div>
             </div>
 
-            <div class="avatar-container">
+            <div class="avatar-container identity-card">
                 <div class="avatar-ring online" id="statusRing">
-                    <img id="profileImg" src="" alt="Avatar">
-                    <div class="status-dot-inner"></div>
+                    <img id="profileImg" src="" alt="User Avatar">
                 </div>
             </div>
 
-            <div class="user-meta">
-                <div class="header-row">
-                    <h2 id="profileName">Carregando...</h2>
-                    <span id="statusBadge" class="status-indicator online">Online</span>
+            <div class="user-meta" style="text-align: center;">
+                <h2 id="profileName" style="font-size: 1.8rem; font-weight: 900;">A carregar...</h2>
+                <span id="profileHandle" style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">@handle</span>
+
+                <div class="id-badge-container">
+                    <span class="id-label">Assinatura Digital HUB</span>
+                    <span id="displayHubID" class="id-value">HUB_XXXXXXXX</span>
+                    <div class="copy-chip" onclick="copyID()">
+                        <i data-lucide="copy"></i>
+                        Copiar ID
+                    </div>
                 </div>
+
+                <p id="profileBio" style="color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; margin: 15px 0;">
+                    A carregar biografia do utilizador...
+                </p>
+
+                <div class="stat-grid-premium">
+                    <div class="stat-item">
+                        <i data-lucide="shield-check"></i>
+                        <strong>Verificado</strong>
+                        <span>Status</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-lucide="zap"></i>
+                        <strong>Alpha</strong>
+                        <span>Acesso</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-lucide="calendar"></i>
+                        <strong id="creationDate">--/--</strong>
+                        <span>Desde</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-actions" style="padding: 20px 24px;">
+                <button class="cta-button" onclick="window.location.href='editarperfil.html'">
+                    <i data-lucide="settings"></i>
+                    <span>Configurar Perfil</span>
+                </button>
                 
-                <span class="user-handle" id="profileHandle">@usuario_hub</span>
-
-                <div class="hub-id-tag" onclick="copyID()">
-                    <i data-lucide="fingerprint"></i>
-                    <span id="displayHubID">HUB_00000000</span>
-                </div>
-
-                <div class="account-date">
-                    <i data-lucide="calendar"></i>
-                    <span>Conta criada em <strong id="creationDate">--/--/----</strong></span>
-                </div>
-
-                <p class="user-bio" id="profileBio">A carregar informações do banco de dados local...</p>
-            </div>
-
-            <div class="profile-actions">
-                <button class="cta-button edit-btn-premium" onclick="window.location.href='editarperfil.html'">
-                    <i data-lucide="user-cog"></i>
-                    <span>Editar Perfil</span>
+                <button class="cta-button" onclick="window.location.href='logout.html'" 
+                        style="background: none; border: 1px solid var(--danger); color: var(--danger); margin-top: 10px; box-shadow: none;">
+                    <i data-lucide="log-out"></i>
+                    <span>Sair da Rede</span>
                 </button>
             </div>
         </div>
-
-        <div class="glass-card info-grid fade-in" style="animation-delay: 0.3s; margin-top: 20px;">
-            <div class="info-item">
-                <div class="info-icon"><i data-lucide="shield-check"></i></div>
-                <div class="info-text">
-                    <strong>Verificado</strong>
-                    <span>Nível de Segurança</span>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-icon"><i data-lucide="cpu"></i></div>
-                <div class="info-text">
-                    <strong>Ativo</strong>
-                    <span>Status da Engine</span>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-icon" style="color: #f59e0b;"><i data-lucide="award"></i></div>
-                <div class="info-text">
-                    <strong>Premium</strong>
-                    <span>Tipo de Plano</span>
-                </div>
-            </div>
-        </div>
-
-        <button class="logout-minimal-btn fade-in" onclick="window.location.href='logout.html'">
-            <i data-lucide="power"></i>
-            <span>Encerrar Sessão do ID</span>
-        </button>
 
     </main>
 
@@ -107,7 +184,7 @@
     <script>
         lucide.createIcons();
 
-        function loadFullProfile() {
+        function loadProfile() {
             const data = JSON.parse(localStorage.getItem("profile"));
 
             if (!data) {
@@ -115,115 +192,35 @@
                 return;
             }
 
-            // Mapeamento de dados
+            // Preenchimento de dados
             document.getElementById('profileName').textContent = data.name;
-            document.getElementById('displayHubID').textContent = data.hubID || "HUB_PENDING";
+            document.getElementById('displayHubID').textContent = data.hubID || "HUB_ERROR";
             document.getElementById('profileHandle').textContent = `@${data.handle || 'user'}`;
-            document.getElementById('profileBio').textContent = data.bio || "Sem biografia definida.";
+            document.getElementById('profileBio').textContent = data.bio || "Membro oficial do HUB Alpha.";
             document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
-            document.getElementById('creationDate').textContent = data.created;
+            document.getElementById('creationDate').textContent = data.created.split('/')[0] + '/' + data.created.split('/')[2].slice(-2);
             
-            const banner = document.getElementById('profileBanner');
-            banner.style.backgroundImage = data.banner ? `url(${data.banner})` : "linear-gradient(135deg,#1e293b,#0f172a)";
+            if(data.banner) {
+                document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
+            }
         }
 
         function copyID() {
             const id = document.getElementById('displayHubID').textContent;
-            navigator.clipboard.writeText(id);
-            alert("ID HUB Copiado!");
+            navigator.clipboard.writeText(id).then(() => {
+                const chip = document.querySelector('.copy-chip');
+                chip.innerHTML = '<i data-lucide="check"></i> Copiado!';
+                chip.style.color = "var(--success)";
+                lucide.createIcons();
+                setTimeout(() => {
+                    chip.innerHTML = '<i data-lucide="copy"></i> Copiar ID';
+                    chip.style.color = "var(--text-dim)";
+                    lucide.createIcons();
+                }, 2000);
+            });
         }
 
-        loadFullProfile();
+        loadProfile();
     </script>
-
-    <style>
-        /* Melhorias de Estilo específicas para o Perfil "Informação Total" */
-        .banner-glow {
-            position: absolute;
-            bottom: 0; left: 0; right: 0; height: 60%;
-            background: linear-gradient(to top, var(--bg-dark), transparent);
-        }
-
-        .avatar-ring {
-            position: relative;
-            box-shadow: 0 0 0 8px var(--bg-dark);
-        }
-
-        .status-dot-inner {
-            position: absolute;
-            bottom: 5px; right: 5px;
-            width: 18px; height: 18px;
-            background: var(--success);
-            border: 3px solid var(--bg-dark);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--success);
-        }
-
-        .header-row { display: flex; align-items: center; gap: 12px; }
-
-        .hub-id-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            padding: 6px 12px;
-            border-radius: 10px;
-            margin: 12px 0;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .hub-id-tag i { width: 14px; color: var(--success); }
-        .hub-id-tag span { font-family: monospace; font-weight: 800; color: var(--success); font-size: 0.9rem; }
-        .hub-id-tag:hover { background: rgba(16, 185, 129, 0.2); transform: scale(1.02); }
-
-        .edit-btn-premium {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid var(--glass-border) !important;
-            border-radius: 18px !important;
-            font-size: 0.9rem !important;
-            transition: 0.3s !important;
-        }
-        .edit-btn-premium:hover {
-            background: var(--primary) !important;
-            border-color: var(--primary) !important;
-            box-shadow: 0 10px 20px var(--primary-glow) !important;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            padding: 20px !important;
-        }
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 15px;
-        }
-        .info-icon {
-            width: 40px; height: 40px;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--primary);
-        }
-        .info-text strong { display: block; font-size: 0.9rem; color: white; }
-        .info-text span { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .logout-minimal-btn {
-            width: 100%;
-            background: none; border: none;
-            color: var(--danger);
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; font-weight: 700; font-size: 0.8rem;
-            margin: 30px 0; opacity: 0.6; cursor: pointer;
-            transition: 0.3s;
-        }
-        .logout-minimal-btn:hover { opacity: 1; letter-spacing: 1px; }
-    </style>
 </body>
 </html>
