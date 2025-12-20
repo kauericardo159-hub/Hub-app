@@ -1,99 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-
-:root {
-    --primary-color: #6366f1; /* Indigo moderno */
-    --accent-color: #818cf8;
-    --bg-dark: #0b0e11;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
+/* Ajustes para o Formulário */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    margin-left: 4px;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at top right, #1e293b, #0b1116, #050505);
-    color: #f1f5f9;
-    height: 100vh;
+.input-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Evita scroll desnecessário na tela de login */
 }
 
-/* Efeito Glassmorphism Elevado */
-.glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 3rem;
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: #6366f1;
+    font-size: 1rem;
+}
+
+.input-wrapper input {
     width: 100%;
-    max-width: 420px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 12px 12px 12px 45px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    transition: 0.3s;
 }
 
-/* Tipografia */
-h1 {
-    font-weight: 900;
-    letter-spacing: -0.025em;
-    background: linear-gradient(to bottom right, #fff, #94a3b8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.75rem;
+.input-wrapper input:focus {
+    border-color: #6366f1;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-p {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    margin-bottom: 2rem;
-}
-
-/* Melhorias no Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-dark);
-}
-
-::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 10px;
-    transition: background 0.3s;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
-}
-
-/* Animações */
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(30px) scale(0.95); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
-    }
-}
-
-/* Ajuste específico para o botão do Google para não quebrar o layout */
-.g_id_signin {
+.form-footer {
     display: flex;
-    justify-content: center;
-    transition: transform 0.2s ease;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-bottom: 25px;
+    color: #94a3b8;
 }
 
-.g_id_signin:hover {
-    transform: translateY(-2px);
+.forgot-link {
+    color: #6366f1;
+    text-decoration: none;
+}
+
+.card-footer {
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.card-footer a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
 }
