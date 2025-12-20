@@ -4,58 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil | HTML HUB</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        /* Ajustes para o ID Numérico Padrão */
-        .id-badge-classic {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            padding: 8px 16px;
-            border-radius: 12px;
-            margin: 15px 0;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .id-badge-classic i { width: 16px; color: var(--primary); }
-        
-        .id-badge-classic span {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 800;
-            color: white;
-            letter-spacing: 1px;
-            font-size: 0.95rem;
-        }
-
-        .id-badge-classic:hover {
-            background: rgba(99, 102, 241, 0.2);
-            transform: scale(1.02);
-        }
-
-        /* Grid de Informações Clássica */
-        .info-total-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .info-box {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            padding: 15px;
-            border-radius: var(--radius-lg);
-            text-align: left;
-        }
-
-        .info-box i { color: var(--primary); margin-bottom: 10px; }
-        .info-box strong { display: block; font-size: 0.8rem; color: white; }
-        .info-box span { font-size: 0.7rem; color: var(--text-dim); }
-    </style>
 </head>
 <body class="dashboard-body">
 
@@ -64,66 +15,72 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <main class="profile-layout fade-in">
+    <header class="app-header fade-in">
+        <span class="app-brand">PERFIL <span class="highlight">HUB</span></span>
+    </header>
+
+    <main class="profile-layout">
         
-        <div class="glass-card profile-main-card">
+        <div class="glass-card profile-main-card fade-in" style="animation-delay: 0.1s;">
             <div class="banner-wrapper">
                 <div id="profileBanner" class="banner-img"></div>
-                <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));"></div>
+                <div class="banner-overlay" style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg-dark));"></div>
             </div>
 
-            <div class="avatar-container" style="margin-top: -55px; position: relative; z-index: 5;">
-                <div class="avatar-ring online">
-                    <img id="profileImg" src="" alt="Avatar">
+            <div class="avatar-container" style="margin-top: -55px; position: relative; z-index: 5; padding-left: 20px;">
+                <div class="avatar-ring online" id="statusRing" style="width: 100px; height: 100px; background: var(--bg-dark); padding: 4px; border-radius: 30px; border: 2px solid var(--success);">
+                    <img id="profileImg" src="" alt="Avatar" style="width: 100%; height: 100%; border-radius: 25px; object-fit: cover;">
                 </div>
             </div>
 
-            <div class="user-meta" style="padding-top: 10px;">
-                <h2 id="profileName" style="font-size: 1.7rem; font-weight: 800;">Carregando...</h2>
-                <span id="profileHandle" style="color: var(--primary); font-weight: 600;">@usuario</span>
+            <div class="user-meta" style="padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h2 id="profileName" style="font-size: 1.6rem; font-weight: 800;">Carregando...</h2>
+                    <span class="status-indicator online" style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 3px 10px; border-radius: 50px; font-weight: 900;">ONLINE</span>
+                </div>
+                
+                <span id="profileHandle" style="color: var(--primary); font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 12px;">@usuario</span>
 
-                <center>
-                    <div class="id-badge-classic" onclick="copyID()">
-                        <i data-lucide="hash"></i>
-                        <span id="displayHubID">HUB_00000000</span>
-                    </div>
-                </center>
+                <div class="hub-id-box" onclick="copyID()" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--glass-border); cursor: pointer;">
+                    <i data-lucide="fingerprint" style="width: 16px; color: var(--text-dim);"></i>
+                    <span id="displayHubID" style="font-family: monospace; font-weight: 800; color: white; letter-spacing: 1px;">HUB_00000000</span>
+                </div>
 
-                <p id="profileBio" style="margin: 15px 0; font-size: 0.9rem; color: var(--text-dim);">
-                    Buscando biografia...
+                <p id="profileBio" style="margin-top: 15px; color: var(--text-dim); font-size: 0.85rem; line-height: 1.6;">
+                    Buscando biografia no sistema...
                 </p>
-
-                <div class="info-total-container">
-                    <div class="info-box">
-                        <i data-lucide="calendar"></i>
-                        <strong>Criação</strong>
-                        <span id="creationDate">--/--/----</span>
-                    </div>
-                    <div class="info-box">
-                        <i data-lucide="check-circle"></i>
-                        <strong>Status</strong>
-                        <span>Verificado</span>
-                    </div>
-                </div>
             </div>
 
-            <div style="padding: 20px;">
-                <button class="cta-button" onclick="window.location.href='editarperfil.html'">
+            <div style="padding: 0 20px 20px;">
+                <button class="cta-button" onclick="window.location.href='editarperfil.html'" style="margin-bottom: 10px;">
                     <i data-lucide="edit-3"></i>
                     <span>Editar Perfil</span>
+                </button>
+                <button onclick="window.location.href='logout.html'" style="width: 100%; background: none; border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i data-lucide="log-out" style="width: 16px;"></i>
+                    Sair da Conta
                 </button>
             </div>
         </div>
 
-        <button class="logout-minimal-btn" onclick="window.location.href='logout.html'" style="margin-top: 20px; color: var(--danger); opacity: 0.8; background: none; border: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;">
-            <i data-lucide="log-out"></i> Sair do Sistema
-        </button>
+        <div class="glass-card fade-in" style="margin-top: 15px; animation-delay: 0.2s; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px;">
+            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; text-align: center;">
+                <i data-lucide="calendar" style="width: 18px; color: var(--primary); margin-bottom: 5px;"></i>
+                <span style="display: block; font-size: 0.6rem; color: var(--text-dim);">MEMBRO DESDE</span>
+                <strong id="creationDate" style="font-size: 0.8rem;">--/--/----</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; text-align: center;">
+                <i data-lucide="shield-check" style="width: 18px; color: var(--success); margin-bottom: 5px;"></i>
+                <span style="display: block; font-size: 0.6rem; color: var(--text-dim);">STATUS ID</span>
+                <strong style="font-size: 0.8rem; color: var(--success);">VERIFICADO</strong>
+            </div>
+        </div>
 
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="layout-grid"></i>
+            <i data-lucide="home"></i>
             <span>Início</span>
         </button>
         <button class="nav-item active">
@@ -140,21 +97,19 @@
             if (!data) { window.location.href = 'index.html'; return; }
 
             document.getElementById('profileName').textContent = data.name;
-            document.getElementById('displayHubID').textContent = data.hubID || "HUB_00000000";
-            document.getElementById('profileHandle').textContent = `@${data.handle || 'user'}`;
-            document.getElementById('profileBio').textContent = data.bio || "Membro oficial do HUB.";
-            document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
+            document.getElementById('displayHubID').textContent = data.hubID;
+            document.getElementById('profileHandle').textContent = `@${data.handle || 'usuario'}`;
+            document.getElementById('profileBio').textContent = data.bio || "Sem biografia.";
+            document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=User";
             document.getElementById('creationDate').textContent = data.created;
             
-            if(data.banner) {
-                document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
-            }
+            if(data.banner) document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
         }
 
         function copyID() {
             const id = document.getElementById('displayHubID').textContent;
             navigator.clipboard.writeText(id);
-            alert("ID HUB Copiado com sucesso!");
+            alert("ID Copiado!");
         }
 
         loadProfile();
