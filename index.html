@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML HUB | Alpha Access</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Splash Screen de Alto Impacto */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #09090b;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.8s ease;
+        }
+        .loader-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.5);
+            animation: pulse-load 2s infinite ease-in-out;
+        }
+        @keyframes pulse-load {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.3); }
+        }
+        .progress-container {
+            margin-top: 30px;
+            width: 150px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #8b5cf6;
+            animation: fill-bar 2.5s forwards;
+        }
+        @keyframes fill-bar { to { width: 100%; } }
+        
+        #main-content { opacity: 0; transition: 1s ease; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="loader-box"><i data-lucide="zap" style="color: white; width: 50px; height: 50px;"></i></div>
+        <div class="progress-container"><div class="progress-bar"></div></div>
+    </div>
+
+    <div id="main-content">
+        <div class="background-wrapper">
+            <div class="glow-sphere pulse"></div>
+            <div class="glow-sphere secondary"></div>
+        </div>
+
+        <main style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+            <div class="glass-card fade-in" style="width: 100%; max-width: 400px; padding: 40px 30px;">
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="font-size: 2rem; font-weight: 900;">HUB <span class="highlight">ALPHA</span></h1>
+                    <p id="auth-desc" style="color: var(--text-dim); font-size: 0.85rem;">Identifique-se para acessar a rede.</p>
+                </div>
+
+                <div id="auth-container">
+                    <form id="auth-form">
+                        <div class="input-field">
+                            <label>Usuário</label>
+                            <div class="field-container">
+                                <i data-lucide="user" class="field-icon"></i>
+                                <input type="text" id="username" placeholder="Nome ou ID" required>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Senha</label>
+                            <div class="field-container">
+                                <i data-lucide="lock" class="field-icon"></i>
+                                <input type="password" id="password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="cta-button" style="margin-top: 10px;">
+                            <span id="btn-text">Entrar na Rede</span>
+                            <i data-lucide="chevron-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">
+                        <span id="toggle-msg">Não tem uma conta?</span>
+                        <a href="javascript:void(0)" onclick="toggleAuth()" id="toggle-link" style="color: var(--primary); font-weight: 800; text-decoration: none;">Criar ID Clássico</a>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // SPLASH SCREEN LOGIC
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                document.getElementById('main-content').style.opacity = '1';
+                setTimeout(() => document.getElementById('loading-screen').remove(), 800);
+            }, 2500);
+        });
+
+        // AUTH LOGIC
+        let isLogin = true;
+
+        function toggleAuth() {
+            isLogin = !isLogin;
+            document.getElementById('auth-desc').textContent = isLogin ? "Identifique-se para acessar a rede." : "Um ID numérico clássico será gerado.";
+            document.getElementById('btn-text').textContent = isLogin ? "Entrar na Rede" : "Gerar Identidade";
+            document.getElementById('toggle-msg').textContent = isLogin ? "Não tem uma conta?" : "Já possui acesso?";
+            document.getElementById('toggle-link').textContent = isLogin ? "Criar ID Clássico" : "Fazer Login";
+        }
+
+        document.getElementById('auth-form').onsubmit = function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+
+            if(!isLogin) {
+                // REGISTRO
+                const randomID = `HUB_${Math.floor(10000000 + Math.random() * 90000000)}`;
+                const profile = {
+                    name: user,
+                    hubID: randomID,
+                    handle: user.toLowerCase().replace(/\s/g, ''),
+                    bio: "Protocolo Alpha iniciado.",
+                    img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`,
+                    created: new Date().toLocaleDateString('pt-BR')
+                };
+                localStorage.setItem("profile", JSON.stringify(profile));
+                alert("CONTA CRIADA!\nSeu ID: " + randomID);
+                toggleAuth();
+            } else {
+                // LOGIN
+                const saved = JSON.parse(localStorage.getItem("profile"));
+                if(saved && (user === saved.name || user === saved.hubID)) {
+                    window.location.href = 'dashboard.html';
+                } else if(user === "admin") {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert("Dados incorretos ou ID não encontrado.");
+                }
+            }
+        };
+    </script>
+</body>
+</html>
