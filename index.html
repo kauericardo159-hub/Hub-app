@@ -3,61 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML HUB | Acesso</title>
+    <title>HTML HUB | Inicializando...</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos da Splash Screen */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-logo {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 30px;
+            box-shadow: 0 0 50px var(--primary-glow);
+            animation: pulse-logo 2s infinite alternate ease-in-out;
+        }
+
+        .splash-logo i {
+            color: white;
+            width: 50px;
+            height: 50px;
+        }
+
+        .splash-text {
+            margin-top: 30px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fade-up 1s forwards 0.5s;
+        }
+
+        .splash-loader {
+            margin-top: 20px;
+            width: 150px;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            animation: loading-progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes loading-progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Esconder o conteúdo principal inicialmente */
+        #main-content { visibility: hidden; opacity: 0; transition: opacity 0.8s ease; }
+    </style>
 </head>
 <body>
 
-    <div class="background-wrapper">
-        <div class="glow-sphere pulse"></div>
-        <div class="glow-sphere secondary"></div>
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i data-lucide="zap"></i>
+        </div>
+        <div class="splash-text">HTML <span class="highlight">HUB</span></div>
+        <div class="splash-loader">
+            <div class="loader-bar"></div>
+        </div>
     </div>
 
-    <main class="login-container fade-in">
-        <div class="glass-card" id="auth-card" style="width: 100%; max-width: 400px; padding: 40px;">
-            
-            <div class="card-header">
-                <div class="brand-logo"><i data-lucide="zap"></i></div>
-                <h1 id="auth-title">Bem-vindo</h1>
-                <p id="auth-desc">Acesse sua conta para continuar.</p>
-            </div>
-
-            <form id="auth-form">
-                <div class="input-field">
-                    <label>Usuário</label>
-                    <div class="field-container">
-                        <i data-lucide="user" class="field-icon"></i>
-                        <input type="text" id="username" placeholder="Seu nome de usuário" required>
-                    </div>
-                </div>
-
-                <div class="input-field">
-                    <label>Senha</label>
-                    <div class="field-container">
-                        <i data-lucide="lock" class="field-icon"></i>
-                        <input type="password" id="password" placeholder="••••••••" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="cta-button" id="submit-btn">
-                    <span>Entrar no HUB</span>
-                    <i data-lucide="chevron-right"></i>
-                </button>
-            </form>
-
-            <div class="card-footer">
-                <p id="toggle-text">Não tem conta? <a href="javascript:void(0)" onclick="toggleAuth()">Criar agora</a></p>
-            </div>
+    <div id="main-content">
+        <div class="background-wrapper">
+            <div class="glow-sphere pulse"></div>
+            <div class="glow-sphere secondary"></div>
         </div>
-    </main>
+
+        <main class="login-container" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;">
+            <div class="glass-card" id="auth-card" style="width: 100%; max-width: 400px; padding: 40px;">
+                <div class="card-header" style="text-align: center; margin-bottom: 30px;">
+                    <h1 id="auth-title">Bem-vindo</h1>
+                    <p id="auth-desc" style="color: var(--text-dim); font-size: 0.9rem;">Acesse sua conta para continuar.</p>
+                </div>
+
+                <form id="auth-form">
+                    <div class="input-field">
+                        <label>Usuário</label>
+                        <div class="field-container">
+                            <i data-lucide="user" class="field-icon"></i>
+                            <input type="text" id="username" placeholder="Seu nome" required>
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Senha</label>
+                        <div class="field-container">
+                            <i data-lucide="lock" class="field-icon"></i>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="cta-button" id="submit-btn">
+                        <span>Entrar no HUB</span>
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </form>
+
+                <div class="card-footer" style="text-align: center; margin-top: 25px;">
+                    <p id="toggle-text" style="font-size: 0.85rem; color: var(--text-dim);">
+                        Não tem conta? <a href="javascript:void(0)" onclick="toggleAuth()" style="color: var(--primary); font-weight: 700; text-decoration: none;">Criar agora</a>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script>
         lucide.createIcons();
 
+        // --- LÓGICA DA SPLASH SCREEN ---
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            const main = document.getElementById('main-content');
+            
+            // Simula o tempo de carregamento do sistema
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                main.style.visibility = 'visible';
+                main.style.opacity = '1';
+                
+                // Remove do DOM após a transição para não pesar
+                setTimeout(() => splash.remove(), 800);
+            }, 3000); // 3 segundos de Splash
+        });
+
+        // --- LÓGICA DE AUTENTICAÇÃO ---
         let isLogin = true;
 
-        // Alternar entre Login e Registro
         function toggleAuth() {
             isLogin = !isLogin;
             const title = document.getElementById('auth-title');
@@ -69,71 +178,47 @@
                 title.textContent = "Nova Conta";
                 desc.textContent = "Cadastre-se para gerar seu ID HUB.";
                 btn.innerHTML = '<span>Criar Conta</span> <i data-lucide="user-plus"></i>';
-                toggleText.innerHTML = 'Já tem conta? <a href="javascript:void(0)" onclick="toggleAuth()">Fazer Login</a>';
+                toggleText.innerHTML = 'Já tem conta? <a href="javascript:void(0)" onclick="toggleAuth()" style="color: var(--primary); font-weight: 700; text-decoration: none;">Fazer Login</a>';
             } else {
                 title.textContent = "Bem-vindo";
                 desc.textContent = "Acesse sua conta para continuar.";
                 btn.innerHTML = '<span>Entrar no HUB</span> <i data-lucide="chevron-right"></i>';
-                toggleText.innerHTML = 'Não tem conta? <a href="javascript:void(0)" onclick="toggleAuth()">Criar agora</a>';
+                toggleText.innerHTML = 'Não tem conta? <a href="javascript:void(0)" onclick="toggleAuth()" style="color: var(--primary); font-weight: 700; text-decoration: none;">Criar agora</a>';
             }
             lucide.createIcons();
         }
 
-        // Função para Gerar ID: HUB_XXXXXXXX (8 dígitos aleatórios)
         function generateHubID() {
-            const numbers = Math.floor(10000000 + Math.random() * 90000000);
-            return `HUB_${numbers}`;
+            return `HUB_${Math.floor(10000000 + Math.random() * 90000000)}`;
         }
 
-        // Lógica de Submissão
         document.getElementById('auth-form').onsubmit = function(e) {
             e.preventDefault();
             const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const btn = document.getElementById('submit-btn');
-
-            btn.style.opacity = "0.6";
-            btn.style.pointerEvents = "none";
-            btn.innerText = "Aguarde...";
-
-            setTimeout(() => {
-                if (!isLogin) {
-                    // MODO REGISTRO: Cria os dados iniciais
-                    const newProfile = {
-                        name: user,
-                        handle: user.toLowerCase().replace(/\s/g, '_'),
-                        bio: "Membro oficial do HTML HUB.",
-                        img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`,
-                        banner: "",
-                        created: new Date().toLocaleDateString(),
-                        hubID: generateHubID() // Gera o ID Único aqui
-                    };
-                    localStorage.setItem("profile", JSON.stringify(newProfile));
-                    alert(`Conta criada! Seu ID é: ${newProfile.hubID}`);
-                    toggleAuth();
+            
+            if (!isLogin) {
+                const newProfile = {
+                    name: user,
+                    handle: user.toLowerCase().replace(/\s/g, '_'),
+                    bio: "Membro oficial do HUB.",
+                    img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`,
+                    banner: "",
+                    created: new Date().toLocaleDateString(),
+                    hubID: generateHubID()
+                };
+                localStorage.setItem("profile", JSON.stringify(newProfile));
+                alert(`ID Gerado: ${newProfile.hubID}`);
+                toggleAuth();
+            } else {
+                const saved = JSON.parse(localStorage.getItem("profile"));
+                if (saved && user === saved.name) {
+                    window.location.href = 'dashboard.html';
+                } else if (user === "admin") {
+                    window.location.href = 'dashboard.html';
                 } else {
-                    // MODO LOGIN
-                    const saved = JSON.parse(localStorage.getItem("profile"));
-                    
-                    // Simulação: se não houver cadastro, aceita admin/1234 e gera um ID na hora
-                    if (saved && user === saved.name) {
-                        window.location.href = 'dashboard.html';
-                    } else if (user === "admin" && pass === "1234") {
-                        if(!saved) {
-                             localStorage.setItem("profile", JSON.stringify({
-                                name: "Admin", hubID: "HUB_00000000", created: "20/12/2025", handle: "admin", bio: "Administrador do Sistema"
-                             }));
-                        }
-                        window.location.href = 'dashboard.html';
-                    } else {
-                        alert("Usuário não encontrado ou senha incorreta.");
-                    }
+                    alert("Usuário não encontrado.");
                 }
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-                btn.innerHTML = isLogin ? '<span>Entrar no HUB</span>' : '<span>Criar Conta</span>';
-                lucide.createIcons();
-            }, 1200);
+            }
         };
     </script>
 </body>
