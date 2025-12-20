@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Hub</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ===== TEMA ===== */
+:root{
+  --bg:#0e1122;
+  --card:#161a33;
+  --card2:#1e234a;
+  --primary:#4f7cff;
+  --text:#f1f3ff;
+  --muted:#9aa2ff;
+}
+.light{
+  --bg:#f2f4ff;
+  --card:#ffffff;
+  --card2:#eef1ff;
+  --primary:#3b5cff;
+  --text:#121630;
+  --muted:#555;
+}
+
+/* ===== BASE ===== */
+body{
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:16px;
+  transition:.35s;
+}
+.app{
+  max-width:480px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+/* ===== PERFIL ===== */
+.profile{
+  background:var(--card);
+  border-radius:26px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* BANNER */
+.profile-banner{
+  height:145px;
+  background:linear-gradient(135deg,#2b3170,var(--primary));
+  background-size:cover;
+  background-position:center;
+}
+
+/* AVATAR */
+.avatar{
+  width:82px;
+  height:82px;
+  border-radius:22px;
+  overflow:hidden;
+  border:4px solid var(--card);
+  position:absolute;
+  left:16px;
+  top:78px; /* avatar levemente mais alto */
+  background:#000;
+  transition:border .3s;
+}
+.avatar.online{border-color:#4cff8f}
+.avatar.offline{border-color:#ff5c5c}
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+/* CONTEÚDO PERFIL */
+.profile-content{
+  padding:22px 16px 14px 116px; /* 🔼 MUITO mais alto */
+  margin-top:-6px;            /* 🔼 puxa tudo para cima */
+}
+
+.profile-name{
+  font-size:1.35em;
+  font-weight:800;
+  line-height:1.05;
+}
+
+.profile-status{
+  font-size:.8em;
+  margin-top:0; /* colado */
+}
+.profile-status.online{color:#4cff8f}
+.profile-status.offline{color:#ff5c5c}
+
+.profile-bio{
+  margin-top:2px; /* 🔼 bio bem próxima */
+  font-size:.9em;
+  opacity:.85;
+  line-height:1.35;
+}
+
+/* ===== BOTÕES ===== */
+.top-actions{
+  display:flex;
+  gap:10px;
+}
+.btn{
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+}
+.btn.alt{
+  background:var(--card2);
+  color:var(--text);
+}
+.btn:active{transform:scale(.96)}
+
+/* ===== HTML LISTA ===== */
+.section{
+  background:var(--card);
+  border-radius:22px;
+  padding:16px;
+}
+.html-item{
+  background:var(--card2);
+  border-radius:18px;
+  overflow:hidden;
+  margin-top:14px;
+}
+.html-cover{
+  height:120px;
+  background:#000 center/cover no-repeat;
+}
+.html-body{padding:14px}
+.html-name{font-weight:700}
+.html-meta{
+  font-size:.75em;
+  opacity:.7;
+  margin-top:6px;
+}
+.html-actions{
+  display:flex;
+  gap:6px;
+  margin-top:12px;
+}
+.html-actions button{
+  flex:1;
+  border:none;
+  border-radius:12px;
+  padding:8px;
+  font-size:.8em;
+  font-weight:600;
+  color:#fff;
+}
+.open{background:#4f7cff}
+.edit{background:#6f5cff}
+.del{background:#ff5c5c}
+
+/* ===== MODAIS ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal.show{display:flex}
+.modal-box{
+  width:100%;
+  max-width:440px;
+  background:var(--card);
+  border-radius:24px;
+  padding:20px;
+  animation:up .25s ease;
+}
+@keyframes up{
+  from{transform:translateY(20px);opacity:0}
+  to{transform:none;opacity:1}
+}
+input,textarea{
+  width:100%;
+  background:var(--card2);
+  border:none;
+  border-radius:14px;
+  padding:12px;
+  color:var(--text);
+  margin-bottom:12px;
+}
+textarea{min-height:120px}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  font-size:.7em;
+  opacity:.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- PERFIL -->
+<div class="profile">
+  <div class="profile-banner" id="profileBanner"></div>
+
+  <div class="avatar" id="avatar">
+    <img id="profileImg">
+  </div>
+
+  <div class="profile-content">
+    <div class="profile-name" id="profileName"></div>
+    <div class="profile-status" id="statusText"></div>
+    <div class="profile-bio" id="profileBio"></div>
+  </div>
+</div>
+
+<div class="top-actions">
+  <button class="btn alt" onclick="openProfile()">Editar Perfil</button>
+  <button class="btn alt" onclick="toggleTheme()">Tema</button>
+</div>
+
+<div class="section">
+  <h3>Seus HTMLs</h3>
+  <div id="htmlList"></div>
+</div>
+
+<button class="btn" onclick="openHtml()">＋ Adicionar HTML</button>
+
+<div class="footer">HTML Hub • v3.8</div>
+</div>
+
+<!-- ===== MODAIS ===== -->
+<div class="modal" id="profileModal">
+  <div class="modal-box">
+    <h3>Editar Perfil</h3>
+    <input id="nameInput" placeholder="Nome">
+    <textarea id="bioInput" placeholder="Bio"></textarea>
+    <input type="file" id="imgInput">
+    <input type="file" id="bannerInput">
+    <button class="btn" onclick="saveProfile()">Salvar</button>
+  </div>
+</div>
+
+<div class="modal" id="htmlModal">
+  <div class="modal-box">
+    <input id="htmlName" placeholder="Nome do HTML">
+    <textarea id="htmlCode"></textarea>
+    <input type="file" id="htmlCoverInput">
+    <button class="btn" onclick="saveHtml()">Salvar</button>
+  </div>
+</div>
+
+<script>
+/* ===== TEMA ===== */
+if(localStorage.getItem("theme")==="light")
+  document.body.classList.add("light");
+
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.setItem("theme",
+    document.body.classList.contains("light")?"light":"dark");
+}
+
+/* ===== STATUS ===== */
+function updateStatus(){
+  const online=navigator.onLine;
+  statusText.textContent=online?"Online":"Offline";
+  statusText.className="profile-status "+(online?"online":"offline");
+  avatar.className="avatar "+(online?"online":"offline");
+}
+window.addEventListener("online",updateStatus);
+window.addEventListener("offline",updateStatus);
+
+/* ===== PERFIL ===== */
+let profile=JSON.parse(localStorage.getItem("profile"))||{
+  name:"Kauê",
+  bio:"Seu espaço pessoal",
+  img:"",
+  banner:""
+};
+
+function renderProfile(){
+  profileName.textContent=profile.name;
+  profileBio.textContent=profile.bio;
+  profileImg.src=profile.img||"icon-192.png";
+  profileBanner.style.backgroundImage=
+    profile.banner?`url(${profile.banner})`:"linear-gradient(135deg,#2b3170,#4f7cff)";
+}
+
+imgInput.onchange=e=>{
+  const r=new FileReader();
+  r.onload=()=>{profile.img=r.result;renderProfile()};
+  r.readAsDataURL(e.target.files[0]);
+};
+bannerInput.onchange=e=>{
+  const r=new FileReader();
+  r.onload=()=>{profile.banner=r.result;renderProfile()};
+  r.readAsDataURL(e.target.files[0]);
+};
+
+function openProfile(){
+  nameInput.value=profile.name;
+  bioInput.value=profile.bio;
+  profileModal.classList.add("show");
+}
+function saveProfile(){
+  profile.name=nameInput.value;
+  profile.bio=bioInput.value;
+  localStorage.setItem("profile",JSON.stringify(profile));
+  renderProfile();
+  profileModal.classList.remove("show");
+}
+
+/* ===== HTMLs ===== */
+let htmls=JSON.parse(localStorage.getItem("htmls"))||[];
+let editingIndex=null;
+let coverTemp="";
+
+htmlCoverInput.onchange=e=>{
+  const r=new FileReader();
+  r.onload=()=>{coverTemp=r.result};
+  r.readAsDataURL(e.target.files[0]);
+};
+
+function renderHtmls(){
+  htmlList.innerHTML="";
+  htmls.forEach((h,i)=>{
+    htmlList.innerHTML+=`
+    <div class="html-item">
+      <div class="html-cover" style="background-image:url('${h.cover||""}')"></div>
+      <div class="html-body">
+        <div class="html-name">${h.name}</div>
+        <div class="erification {
+        <div class="html-meta">${h.updated||""}</div>
+        <div class="html-actions">
+          <button class="open" onclick="openFile(${i})">Abrir</button>
+          <button class="edit" onclick="editHtml(${i})">Editar</button>
+          <button class="del" onclick="delHtml(${i})">X</button>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function openHtml(){
+  editingIndex=null;
+  htmlName.value="";
+  htmlCode.value="";
+  coverTemp="";
+  htmlModal.classList.add("show");
+}
+function saveHtml(){
+  const now=new Date().toLocaleString();
+  if(editingIndex===null){
+    htmls.push({name:htmlName.value,code:htmlCode.value,cover:coverTemp,updated:now});
+  }else{
+    htmls[editingIndex].name=htmlName.value;
+    htmls[editingIndex].code=htmlCode.value;
+    if(coverTemp)htmls[editingIndex].cover=coverTemp;
+    htmls[editingIndex].updated=now;
+  }
+  localStorage.setItem("htmls",JSON.stringify(htmls));
+  htmlModal.classList.remove("show");
+  renderHtmls();
+}
+function editHtml(i){
+  editingIndex=i;
+  htmlName.value=htmls[i].name;
+  htmlCode.value=htmls[i].code;
+  coverTemp=htmls[i].cover||"";
+  htmlModal.classList.add("show");
+}
+function delHtml(i){
+  if(confirm("Excluir?")){
+    htmls.splice(i,1);
+    localStorage.setItem("htmls",JSON.stringify(htmls));
+    renderHtmls();
+  }
+}
+function openFile(i){
+  const w=window.open();
+  w.document.write(htmls[i].code);
+}
+
+/* FECHAR MODAIS */
+document.querySelectorAll(".modal").forEach(m=>{
+  m.onclick=e=>{if(e.target===m)m.classList.remove("show")}
+});
+
+/* INIT */
+renderProfile();
+renderHtmls();
+updateStatus();
+</script>
+
+</body>
+</html>
