@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Restrito | Premium Cloud</title>
+    <title>Premium Auth | Sistema Unificado</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -15,89 +15,139 @@
     </div>
 
     <main class="login-container">
-        <div class="glass-card main-card">
-            <div class="card-header">
-                <div class="brand-logo">
-                    <i data-lucide="zap" class="logo-icon"></i>
+        <div class="glass-card main-card" id="auth-card">
+            
+            <div id="login-screen">
+                <div class="card-header">
+                    <div class="brand-logo"><i data-lucide="zap"></i></div>
+                    <h1>Bem-vindo</h1>
+                    <p>Acesse sua conta para continuar.</p>
                 </div>
-                <h1>Bem-vindo</h1>
-                <p>Identifique-se para continuar com segurança.</p>
+
+                <form onsubmit="handleAuth(event, 'login')">
+                    <div class="input-field">
+                        <label>Usuário</label>
+                        <div class="field-container">
+                            <i data-lucide="user" class="field-icon"></i>
+                            <input type="text" id="login-user" placeholder="Seu usuário" required>
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Senha</label>
+                        <div class="field-container">
+                            <i data-lucide="lock" class="field-icon"></i>
+                            <input type="password" id="login-pass" placeholder="••••••••" required>
+                            <button type="button" class="toggle-password" onclick="togglePass('login-pass')">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="cta-button">
+                        <span>Entrar</span>
+                        <i data-lucide="log-in"></i>
+                    </button>
+                </form>
+
+                <div class="card-footer">
+                    <a href="javascript:void(0)" onclick="alert('Funcionalidade de recuperação enviada ao e-mail adm!')">Esqueceu a senha?</a>
+                    <div class="divider"><span>ou use</span></div>
+                    <div class="social-helpers">
+                        <button class="social-btn" onclick="alert('Login via GitHub em breve!')"><i data-lucide="github"></i></button>
+                        <button class="social-btn" onclick="alert('Login via Google em breve!')"><i data-lucide="mail"></i></button>
+                    </div>
+                    <p class="signup-text">Novo por aqui? <a href="javascript:void(0)" onclick="switchScreen('register')">Criar conta</a></p>
+                </div>
             </div>
 
-            <form id="auth-form" onsubmit="handleAuth(event)">
-                <div class="input-field">
-                    <label>Nome de Usuário</label>
-                    <div class="field-container">
-                        <i data-lucide="user" class="field-icon"></i>
-                        <input type="text" id="username" placeholder="Seu apelido ou e-mail" required autocomplete="username">
+            <div id="register-screen" style="display: none;">
+                <div class="card-header">
+                    <div class="brand-logo" style="background: #10b981;"><i data-lucide="user-plus"></i></div>
+                    <h1>Criar Conta</h1>
+                    <p>Junte-se a nós hoje mesmo.</p>
+                </div>
+
+                <form onsubmit="handleAuth(event, 'register')">
+                    <div class="input-field">
+                        <label>Nome Completo</label>
+                        <div class="field-container">
+                            <i data-lucide="info" class="field-icon"></i>
+                            <input type="text" placeholder="Como quer ser chamado?" required>
+                        </div>
                     </div>
-                    <span class="error-msg" id="user-error"></span>
-                </div>
 
-                <div class="input-field">
-                    <label>Sua Senha</label>
-                    <div class="field-container">
-                        <i data-lucide="lock" class="field-icon"></i>
-                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
-                        <button type="button" class="toggle-password" onclick="togglePass()">
-                            <i data-lucide="eye" id="eye-icon"></i>
-                        </button>
+                    <div class="input-field">
+                        <label>Escolha um Usuário</label>
+                        <div class="field-container">
+                            <i data-lucide="at-sign" class="field-icon"></i>
+                            <input type="text" placeholder="@usuario" required>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" class="cta-button" id="submit-btn">
-                    <span class="btn-text">Entrar no Sistema</span>
-                    <i data-lucide="chevron-right" class="btn-icon"></i>
-                </button>
-            </form>
+                    <div class="input-field">
+                        <label>Crie uma Senha</label>
+                        <div class="field-container">
+                            <i data-lucide="shield-check" class="field-icon"></i>
+                            <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required>
+                        </div>
+                    </div>
 
-            <div class="card-footer">
-                <div class="divider"><span>ou acesse com</span></div>
-                <div class="social-helpers">
-                    <button class="social-btn"><i data-lucide="github"></i></button>
-                    <button class="social-btn"><i data-lucide="twitter"></i></button>
+                    <button type="submit" class="cta-button" style="background: #10b981;">
+                        <span>Finalizar Cadastro</span>
+                        <i data-lucide="check"></i>
+                    </button>
+                </form>
+
+                <div class="card-footer">
+                    <p class="signup-text">Já tem conta? <a href="javascript:void(0)" onclick="switchScreen('login')">Fazer Login</a></p>
                 </div>
-                <p class="signup-text">Novo por aqui? <a href="#">Crie sua conta</a></p>
             </div>
+
         </div>
     </main>
 
     <script>
         lucide.createIcons();
 
-        function togglePass() {
-            const passInput = document.getElementById('password');
-            const icon = document.getElementById('eye-icon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                icon.setAttribute('data-lucide', 'eye-off');
-            } else {
-                passInput.type = 'password';
-                icon.setAttribute('data-lucide', 'eye');
-            }
-            lucide.createIcons();
+        // Troca entre telas com animação
+        function switchScreen(screen) {
+            const login = document.getElementById('login-screen');
+            const register = document.getElementById('register-screen');
+            const card = document.getElementById('auth-card');
+
+            card.style.transform = "scale(0.95)";
+            card.style.opacity = "0.5";
+
+            setTimeout(() => {
+                if(screen === 'register') {
+                    login.style.display = 'none';
+                    register.style.display = 'block';
+                } else {
+                    login.style.display = 'block';
+                    register.style.display = 'none';
+                }
+                card.style.transform = "scale(1)";
+                card.style.opacity = "1";
+                lucide.createIcons();
+            }, 300);
         }
 
-        async function handleAuth(event) {
-            event.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            const text = btn.querySelector('.btn-text');
-            
-            // Estado de carregamento
-            text.innerText = "Autenticando...";
-            btn.classList.add('loading');
+        function togglePass(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
 
-            // Simulação de delay de rede
-            await new Promise(r => setTimeout(r, 2000));
+        function handleAuth(e, type) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = "Processando...";
+            btn.style.opacity = "0.6";
 
-            // Logica básica de exemplo
-            const user = document.getElementById('username').value;
-            if (user === "admin") {
-                alert("Sucesso! Redirecionando...");
-            } else {
-                alert("Credenciais inválidas.");
+            setTimeout(() => {
+                alert(type === 'login' ? "Login realizado!" : "Conta criada com sucesso!");
                 location.reload();
-            }
+            }, 1500);
         }
     </script>
 </body>
