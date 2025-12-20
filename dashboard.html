@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle | Pro</title>
+    <title>Painel Inicial | HTML Hub</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -11,126 +11,85 @@
 
     <div class="background-wrapper">
         <div class="glow-sphere pulse"></div>
-        <div class="glow-sphere secondary rotate"></div>
+        <div class="glow-sphere secondary"></div>
     </div>
 
     <nav class="top-bar glass-card">
         <div class="brand-small">
             <i data-lucide="zap"></i>
-            <span>Premium</span>
+            <span>HTML HUB</span>
         </div>
         <div class="top-actions">
-            <button class="icon-btn" onclick="alert('Sem notificações no momento')">
+            <button class="icon-btn" onclick="alert('Nenhuma notificação')">
                 <i data-lucide="bell"></i>
                 <span class="badge"></span>
             </button>
         </div>
     </nav>
 
-    <main class="content-container" id="main-content">
-        
-        <section id="home-view" class="view-section">
+    <main class="content-container">
+        <section class="view-section">
             <div class="welcome-banner">
-                <h1>Bom dia, <span class="highlight">Kaue</span>!</h1>
-                <p>Aqui está o que está acontecendo hoje.</p>
+                <h1>Olá, <span id="display-name" class="highlight">Explorador</span>!</h1>
+                <p>O que vamos criar hoje?</p>
             </div>
 
             <div class="quick-actions">
-                <div class="action-card glass-card" onclick="alert('Funcionalidade em breve')">
-                    <div class="icon-wrap cyan"><i data-lucide="plus"></i></div>
-                    <span>Novo Item</span>
+                <div class="action-card glass-card" onclick="window.location.href='perfil.html'">
+                    <div class="icon-wrap cyan"><i data-lucide="folder-plus"></i></div>
+                    <span>Ver Projetos</span>
                 </div>
-                <div class="action-card glass-card" onclick="alert('Acesso ao Relatório')">
-                    <div class="icon-wrap purple"><i data-lucide="file-text"></i></div>
-                    <span>Relatórios</span>
+                <div class="action-card glass-card" onclick="window.location.href='perfil.html'">
+                    <div class="icon-wrap purple"><i data-lucide="user-cog"></i></div>
+                    <span>Editar Perfil</span>
                 </div>
             </div>
 
             <div class="recent-activity glass-card">
-                <h3>Atividade Recente</h3>
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1rem;">Status da Conta</h3>
                 <div class="activity-item">
                     <div class="dot active"></div>
                     <div class="activity-info">
-                        <strong>Login realizado</strong>
-                        <span>Há 2 minutos</span>
+                        <strong>Armazenamento Local</strong>
+                        <span>Ativo (Navegador)</span>
                     </div>
                 </div>
                 <div class="activity-item">
-                    <div class="dot"></div>
+                    <div class="dot active"></div>
                     <div class="activity-info">
-                        <strong>Perfil atualizado</strong>
-                        <span>Ontem às 18:30</span>
+                        <strong>Sincronização Vercel</strong>
+                        <span>Online</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="profile-view" class="view-section" style="display: none;">
-            <div class="profile-header-main">
-                <div class="avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue" alt="Avatar">
-                    <button class="edit-avatar"><i data-lucide="camera"></i></button>
-                </div>
-                <h2>Kaue Machado</h2>
-                <span>Membro Pro</span>
-            </div>
-
-            <div class="settings-list">
-                <div class="glass-card setting-item">
-                    <i data-lucide="settings"></i>
-                    <span>Configurações da Conta</span>
-                    <i data-lucide="chevron-right"></i>
-                </div>
-                <div class="glass-card setting-item">
-                    <i data-lucide="shield-check"></i>
-                    <span>Segurança e Privacidade</span>
-                    <i data-lucide="chevron-right"></i>
-                </div>
-                <button class="btn-logout" onclick="window.location.href='index.html'">
-                    <i data-lucide="log-out"></i> Sair com Segurança
-                </button>
             </div>
         </section>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="navigate('home')" id="nav-home">
+        <button class="nav-item active" onclick="window.location.href='dashboard.html'">
             <i data-lucide="layout-grid"></i>
             <span>Início</span>
         </button>
-        <button class="nav-item" onclick="navigate('profile')" id="nav-profile">
+        <button class="nav-item" onclick="window.location.href='perfil.html'">
             <i data-lucide="user"></i>
             <span>Perfil</span>
         </button>
     </nav>
 
     <script>
+        // Inicia os ícones
         lucide.createIcons();
 
-        function navigate(view) {
-            const home = document.getElementById('home-view');
-            const profile = document.getElementById('profile-view');
-            const navItems = document.querySelectorAll('.nav-item');
-
-            // Fade Out
-            home.classList.remove('fade-in');
-            profile.classList.remove('fade-in');
-            
-            navItems.forEach(item => item.classList.remove('active'));
-
-            setTimeout(() => {
-                if(view === 'home') {
-                    home.style.display = 'block';
-                    profile.style.display = 'none';
-                    document.getElementById('nav-home').classList.add('active');
-                } else {
-                    home.style.display = 'none';
-                    profile.style.display = 'block';
-                    document.getElementById('nav-profile').classList.add('active');
-                }
-                lucide.createIcons();
-            }, 50);
+        // Tenta carregar o nome que o utilizador definiu no perfil.html
+        function loadUserData() {
+            const savedProfile = localStorage.getItem("profile");
+            if (savedProfile) {
+                const profile = JSON.parse(savedProfile);
+                document.getElementById('display-name').textContent = profile.name.split(' ')[0];
+            }
         }
+
+        loadUserData();
     </script>
 </body>
 </html>
