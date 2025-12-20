@@ -3,145 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu App - Login</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Plataforma Premium | Login</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
-    <style>
-        :root {
-            --primary-color: #4285f4;
-            --text-color: #333;
-            --bg-color: #f8f9fa;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            display: flex;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        p { color: #666; margin-bottom: 2rem; }
-
-        /* Estilização do estado Logado */
-        #user-profile {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .btn-logout {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="login-card">
-            <div class="logo">AppLogo</div>
-            
-            <div id="login-section">
-                <h1>Bem-vindo de volta</h1>
-                <p>Use sua conta do Google para entrar no sistema.</p>
-                
-                <div id="g_id_onload"
-                    data-client_id="SEU_CLIENT_ID_AQUI.apps.googleusercontent.com"
-                    data-callback="onSignIn"
-                    data-auto_prompt="false">
-                </div>
-
-                <div class="g_id_signin" 
-                    data-type="standard" 
-                    data-size="large" 
-                    data-theme="outline" 
-                    data-text="signin_with" 
-                    data-shape="rectangular" 
-                    data-logo_alignment="left">
-                </div>
-            </div>
-
-            <div id="user-profile">
-                <img id="user-photo" src="" alt="Foto" class="avatar">
-                <h2 id="user-name">Usuário</h2>
-                <p id="user-email"></p>
-                <button class="btn-logout" onclick="signOut()">Sair da Conta</button>
-            </div>
-        </div>
+    <div class="bg-blur-elements">
+        <div class="circle cyan"></div>
+        <div class="circle purple"></div>
     </div>
 
+    <main class="container">
+        <div class="glass-card">
+            <div id="auth-content">
+                <header>
+                    <div class="icon-box">✦</div>
+                    <h1>Bem-vindo</h1>
+                    <p>Conecte-se para acessar seu painel exclusivo.</p>
+                </header>
+
+                <div class="login-wrapper">
+                    <div id="g_id_onload"
+                        data-client_id="SEU_CLIENT_ID_REAL.apps.googleusercontent.com"
+                        data-callback="handleAuth"
+                        data-auto_prompt="false">
+                    </div>
+
+                    <div class="g_id_signin" 
+                        data-type="standard" 
+                        data-shape="pill" 
+                        data-theme="filled_blue" 
+                        data-text="signin_with" 
+                        data-size="large" 
+                        data-logo_alignment="left">
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile-content" style="display: none;">
+                <div class="profile-header">
+                    <img id="user-avatar" src="" alt="Avatar">
+                    <h2 id="user-name"></h2>
+                    <span id="user-email"></span>
+                </div>
+                <nav class="profile-menu">
+                    <button class="btn-primary">Acessar Dashboard</button>
+                    <button class="btn-ghost" onclick="logout()">Sair</button>
+                </nav>
+            </div>
+        </div>
+    </main>
+
     <script>
-        // Callback executado após o login
-        function onSignIn(response) {
-            const data = decodeToken(response.credential);
+        function handleAuth(response) {
+            const payload = decodeJwt(response.credential);
             
-            // Alternar visibilidade
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('user-profile').style.display = 'block';
-
-            // Preencher dados
-            document.getElementById('user-photo').src = data.picture;
-            document.getElementById('user-name').innerText = data.name;
-            document.getElementById('user-email').innerText = data.email;
+            // Transição suave entre telas
+            document.getElementById('auth-content').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('auth-content').style.display = 'none';
+                const profile = document.getElementById('profile-content');
+                profile.style.display = 'block';
+                
+                document.getElementById('user-avatar').src = payload.picture;
+                document.getElementById('user-name').innerText = payload.name;
+                document.getElementById('user-email').innerText = payload.email;
+            }, 400);
         }
 
-        // Função para decodificar o JWT (Payload do Google)
-        function decodeToken(token) {
+        function decodeJwt(token) {
             const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(atob(base64));
+            return JSON.parse(atob(base64Url.replace(/-/g, '+').replace(/_/g, '/')));
         }
 
-        function signOut() {
-            // Limpa a sessão do Google e recarrega a página
+        function logout() {
             google.accounts.id.disableAutoSelect();
             location.reload();
         }
