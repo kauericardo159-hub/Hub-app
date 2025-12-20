@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Inicial | HTML Hub</title>
+    <title>Painel | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -14,60 +14,66 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <nav class="top-bar glass-card">
+    <header class="top-bar glass-card" style="margin-bottom: 20px;">
         <div class="brand-small">
-            <i data-lucide="zap"></i>
-            <span>HTML HUB</span>
+            <i data-lucide="layout-grid" class="highlight"></i>
+            <span>DASHBOARD</span>
         </div>
-        <div class="top-actions">
-            <button class="icon-btn" onclick="alert('Nenhuma notificação')">
-                <i data-lucide="bell"></i>
-                <span class="badge"></span>
-            </button>
-        </div>
-    </nav>
+        <div class="user-id-badge" id="hub-id-display">HUB_00000000</div>
+    </header>
 
-    <main class="content-container">
-        <section class="view-section">
-            <div class="welcome-banner">
-                <h1>Olá, <span id="display-name" class="highlight">Explorador</span>!</h1>
-                <p>O que vamos criar hoje?</p>
-            </div>
-
-            <div class="quick-actions">
-                <div class="action-card glass-card" onclick="window.location.href='perfil.html'">
-                    <div class="icon-wrap cyan"><i data-lucide="folder-plus"></i></div>
-                    <span>Ver Projetos</span>
-                </div>
-                <div class="action-card glass-card" onclick="window.location.href='perfil.html'">
-                    <div class="icon-wrap purple"><i data-lucide="user-cog"></i></div>
-                    <span>Editar Perfil</span>
-                </div>
-            </div>
-
-            <div class="recent-activity glass-card">
-                <h3 style="color: white; margin-bottom: 15px; font-size: 1rem;">Status da Conta</h3>
-                <div class="activity-item">
-                    <div class="dot active"></div>
-                    <div class="activity-info">
-                        <strong>Armazenamento Local</strong>
-                        <span>Ativo (Navegador)</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="dot active"></div>
-                    <div class="activity-info">
-                        <strong>Sincronização Vercel</strong>
-                        <span>Online</span>
-                    </div>
-                </div>
-            </div>
+    <main class="content-container fade-in">
+        
+        <section class="welcome-banner" style="margin-bottom: 30px;">
+            <h1 style="font-size: 1.8rem;">Olá, <span id="user-greeting" class="highlight">Usuário</span>!</h1>
+            <p>Seja bem-vindo ao seu centro de controle.</p>
         </section>
+
+        <div class="quick-actions" style="grid-template-columns: 1fr; gap: 15px;">
+            
+            <div class="glass-card detail-card" style="display: flex; align-items: center; gap: 20px; padding: 20px !important;">
+                <div class="avatar-ring online" style="width: 60px; height: 60px;">
+                    <img id="dash-avatar" src="" style="border-radius: 15px;">
+                </div>
+                <div style="text-align: left;">
+                    <h3 id="dash-name" style="font-size: 1rem; color: white;">Nome do Usuário</h3>
+                    <span id="dash-handle" style="font-size: 0.8rem; color: var(--primary);">@username</span>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 20px !important; display: flex; justify-content: space-around; align-items: center;">
+                <button class="nav-item" onclick="window.location.href='perfil.html'">
+                    <i data-lucide="user-circle" style="color: var(--primary);"></i>
+                    <span style="font-size: 0.6rem; margin-top: 5px;">VER PERFIL</span>
+                </button>
+                <div style="width: 1px; height: 30px; background: var(--glass-border);"></div>
+                <button class="nav-item" onclick="window.location.href='editarperfil.html'">
+                    <i data-lucide="settings" style="color: var(--primary);"></i>
+                    <span style="font-size: 0.6rem; margin-top: 5px;">AJUSTES</span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="glass-card" style="margin-top: 20px; padding: 20px !important;">
+            <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-dim);">DADOS DA SESSÃO</h3>
+            <div class="info-row" style="flex-direction: column; gap: 10px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--text-dim);">ID Único:</span>
+                    <strong id="info-id" style="color: var(--success);">---</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--text-dim);">Status:</span>
+                    <strong style="color: var(--primary);">CONECTADO</strong>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="layout-grid"></i>
+            <i data-lucide="home"></i>
             <span>Início</span>
         </button>
         <button class="nav-item" onclick="window.location.href='perfil.html'">
@@ -77,19 +83,40 @@
     </nav>
 
     <script>
-        // Inicia os ícones
         lucide.createIcons();
 
-        // Tenta carregar o nome que o utilizador definiu no perfil.html
-        function loadUserData() {
-            const savedProfile = localStorage.getItem("profile");
-            if (savedProfile) {
-                const profile = JSON.parse(savedProfile);
-                document.getElementById('display-name').textContent = profile.name.split(' ')[0];
+        // Carregar dados reais do localStorage
+        function initDashboard() {
+            const data = JSON.parse(localStorage.getItem("profile"));
+
+            if (data) {
+                // Preenche os campos com os dados do usuário
+                document.getElementById('user-greeting').textContent = data.name.split(' ')[0];
+                document.getElementById('hub-id-display').textContent = data.hubID;
+                document.getElementById('info-id').textContent = data.hubID;
+                document.getElementById('dash-name').textContent = data.name;
+                document.getElementById('dash-handle').textContent = `@${data.handle || 'usuario'}`;
+                document.getElementById('dash-avatar').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
+            } else {
+                // Se não houver dados, volta para o login
+                window.location.href = 'index.html';
             }
         }
 
-        loadUserData();
+        initDashboard();
     </script>
+
+    <style>
+        .user-id-badge {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-weight: 800;
+            font-size: 0.8rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+    </style>
 </body>
 </html>
