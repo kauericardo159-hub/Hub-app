@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil | HTML Hub</title>
+    <title>Perfil HUB | Identidade</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -15,12 +15,12 @@
     </div>
 
     <header class="app-header">
-        <span class="app-brand">HTML <span class="highlight">HUB</span></span>
+        <span class="app-brand">PERFIL <span class="highlight">HUB</span></span>
     </header>
 
-    <main class="profile-layout">
+    <main class="profile-layout fade-in">
         
-        <div class="glass-card profile-main-card fade-in">
+        <div class="glass-card profile-main-card">
             <div class="banner-wrapper">
                 <div id="profileBanner" class="banner-img"></div>
                 <div class="banner-overlay"></div>
@@ -35,39 +35,49 @@
             <div class="user-meta">
                 <div class="name-status">
                     <h2 id="profileName">Carregando...</h2>
-                    <span id="statusBadge" class="status-indicator">Offline</span>
+                    <span id="statusBadge" class="status-indicator">Online</span>
                 </div>
+                
+                <div class="hub-id-container">
+                    <span class="hub-label">ID OFICIAL:</span>
+                    <span id="displayHubID" class="hub-id-value">HUB_00000000</span>
+                    <button class="copy-btn" onclick="copyID()"><i data-lucide="copy"></i></button>
+                </div>
+
                 <span class="user-handle" id="profileHandle">@usuario</span>
                 
                 <div class="account-date">
                     <i data-lucide="calendar"></i>
-                    <span>Desde <span id="creationDate">--/--/----</span></span>
+                    <span>Membro desde <span id="creationDate">--/--/----</span></span>
                 </div>
 
-                <p class="user-bio" id="profileBio">...</p>
+                <p class="user-bio" id="profileBio">Carregando biografia do sistema...</p>
             </div>
 
             <div class="profile-actions">
                 <button class="cta-button edit-btn" onclick="window.location.href='editarperfil.html'">
-                    <i data-lucide="edit-3"></i>
-                    <span>Editar Perfil</span>
+                    <i data-lucide="settings-2"></i>
+                    <span>Personalizar Perfil</span>
                 </button>
             </div>
         </div>
 
-        <div class="glass-card detail-card fade-in" style="animation-delay: 0.2s;">
+        <div class="glass-card detail-card" style="margin-top: 15px;">
             <div class="info-row">
                 <div class="info-box">
-                    <strong>0</strong>
-                    <span>Projetos</span>
+                    <i data-lucide="shield-check" style="color: var(--success); margin-bottom: 5px;"></i>
+                    <strong>Verificado</strong>
+                    <span>Status</span>
                 </div>
                 <div class="info-box">
-                    <strong>PRO</strong>
-                    <span>Plano</span>
+                    <i data-lucide="database" style="color: var(--primary); margin-bottom: 5px;"></i>
+                    <strong>Local</strong>
+                    <span>Data</span>
                 </div>
                 <div class="info-box">
-                    <strong>100%</strong>
-                    <span>Confiável</span>
+                    <i data-lucide="zap" style="color: #f59e0b; margin-bottom: 5px;"></i>
+                    <strong>Ativo</strong>
+                    <span>Nível</span>
                 </div>
             </div>
         </div>
@@ -76,7 +86,7 @@
 
     <nav class="bottom-nav">
         <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="layout-grid"></i>
+            <i data-lucide="home"></i>
             <span>Início</span>
         </button>
         <button class="nav-item active" onclick="window.location.href='perfil.html'">
@@ -88,43 +98,84 @@
     <script>
         lucide.createIcons();
 
-        // Carregar dados salvos
         function loadProfile() {
-            const data = JSON.parse(localStorage.getItem("profile")) || {
-                name: "Kauê Machado",
-                handle: "kaue_hub",
-                bio: "Apaixonado por tecnologia e design minimalista.",
-                img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue",
-                banner: "",
-                created: "20/12/2025"
-            };
+            const data = JSON.parse(localStorage.getItem("profile"));
+
+            if (!data) {
+                window.location.href = 'index.html';
+                return;
+            }
 
             document.getElementById('profileName').textContent = data.name;
+            document.getElementById('displayHubID').textContent = data.hubID || "HUB_NÃO_GERADO";
             document.getElementById('profileHandle').textContent = `@${data.handle || 'usuario'}`;
-            document.getElementById('profileBio').textContent = data.bio;
-            document.getElementById('profileImg').src = data.img;
+            document.getElementById('profileBio').textContent = data.bio || "Sem biografia disponível.";
+            document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
             document.getElementById('creationDate').textContent = data.created;
             
             const banner = document.getElementById('profileBanner');
             banner.style.backgroundImage = data.banner ? `url(${data.banner})` : "linear-gradient(135deg,#2b3170,#4f7cff)";
         }
 
-        // Status Online Simulado
-        function updateOnlineStatus() {
+        function copyID() {
+            const idText = document.getElementById('displayHubID').textContent;
+            navigator.clipboard.writeText(idText);
+            alert("ID copiado para a área de transferência!");
+        }
+
+        // Sistema de Status
+        function updateStatus() {
             const online = navigator.onLine;
             const badge = document.getElementById('statusBadge');
             const ring = document.getElementById('statusRing');
-            
             badge.textContent = online ? "Online" : "Offline";
             badge.className = `status-indicator ${online ? 'online' : 'offline'}`;
             ring.className = `avatar-ring ${online ? 'online' : 'offline'}`;
         }
 
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
 
         loadProfile();
-        updateOnlineStatus();
+        updateStatus();
     </script>
+
+    <style>
+        /* Estilos específicos para o ID no Perfil */
+        .hub-id-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--glass-border);
+            width: fit-content;
+        }
+        .hub-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-dim);
+        }
+        .hub-id-value {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            color: var(--success);
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .copy-btn:hover { color: var(--primary); transform: scale(1.1); }
+        .copy-btn i { width: 14px; }
+    </style>
 </body>
 </html>
