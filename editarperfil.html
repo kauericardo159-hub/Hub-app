@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações | HUB</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .edit-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .edit-header {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .edit-header h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px;
+            font-size: 0.9rem;
+            min-height: 100px;
+            resize: none;
+            outline: none;
+        }
+
+        .save-btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dim);
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Preview de Miniatura */
+        .preview-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: var(--glass);
+            border: 1px solid var(--primary);
+            overflow: hidden;
+            margin-left: auto;
+        }
+        .preview-circle img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <div class="background-wrapper">
+        <div class="glow-sphere pulse"></div>
+        <div class="glow-sphere secondary"></div>
+    </div>
+
+    <main class="edit-container fade-in">
+        <div class="edit-header">
+            <div style="background: var(--primary); padding: 10px; border-radius: 14px; box-shadow: 0 0 20px var(--primary-glow);">
+                <i data-lucide="sliders" style="color: white; width: 24px; height: 24px;"></i>
+            </div>
+            <h2>Ajustes de <span class="highlight">Perfil</span></h2>
+        </div>
+
+        <div class="glass-card" style="padding: 30px;">
+            <form id="profileEditForm" class="form-section">
+                
+                <div class="input-field">
+                    <label>Nome Visível</label>
+                    <div class="field-container">
+                        <i data-lucide="user" class="field-icon"></i>
+                        <input type="text" id="inName" placeholder="Seu nome real" required>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label>Biografia do Sistema</label>
+                    <div class="field-container" style="align-items: flex-start;">
+                        <textarea id="inBio" placeholder="Escreva algo sobre você..."></textarea>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <label style="margin-bottom: 0;">Link da Foto (URL)</label>
+                        <div class="preview-circle"><img id="preImg" src="" alt=""></div>
+                    </div>
+                    <div class="field-container">
+                        <i data-lucide="image" class="field-icon"></i>
+                        <input type="text" id="inImg" placeholder="https://exemplo.com/foto.png">
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label>Link do Banner (Opcional)</label>
+                    <div class="field-container">
+                        <i data-lucide="layout" class="field-icon"></i>
+                        <input type="text" id="inBanner" placeholder="https://exemplo.com/banner.jpg">
+                    </div>
+                </div>
+
+                <div class="input-field" style="opacity: 0.6;">
+                    <label>ID de Registro (HUB_VAROGHAA)</label>
+                    <div class="field-container" style="background: rgba(0,0,0,0.3);">
+                        <i data-lucide="lock" class="field-icon" style="color: var(--text-dim);"></i>
+                        <input type="text" value="HUB_VAROGHAA" readonly>
+                    </div>
+                </div>
+
+                <div class="save-btn-group">
+                    <a href="perfil.html" class="cancel-btn">Cancelar</a>
+                    <button type="submit" class="cta-button">
+                        <span>Salvar</span>
+                        <i data-lucide="check"></i>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Carregar dados atuais
+        const userData = JSON.parse(localStorage.getItem("profile"));
+
+        if(userData) {
+            document.getElementById('inName').value = userData.name || "";
+            document.getElementById('inBio').value = userData.bio || "";
+            document.getElementById('inImg').value = userData.img || "";
+            document.getElementById('inBanner').value = userData.banner || "";
+            document.getElementById('preImg').src = userData.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=User";
+        }
+
+        // Preview de imagem em tempo real
+        document.getElementById('inImg').addEventListener('input', (e) => {
+            document.getElementById('preImg').src = e.target.value || "https://api.dicebear.com/7.x/avataaars/svg?seed=User";
+        });
+
+        // Salvar alterações
+        document.getElementById('profileEditForm').onsubmit = function(e) {
+            e.preventDefault();
+
+            userData.name = document.getElementById('inName').value;
+            userData.bio = document.getElementById('inBio').value;
+            userData.img = document.getElementById('inImg').value;
+            userData.banner = document.getElementById('inBanner').value;
+            userData.handle = userData.name.toLowerCase().replace(/\s/g, '');
+
+            localStorage.setItem("profile", JSON.stringify(userData));
+            
+            alert("Protocolo de atualização concluído!");
+            window.location.href = 'perfil.html';
+        };
+    </script>
+</body>
+</html>
