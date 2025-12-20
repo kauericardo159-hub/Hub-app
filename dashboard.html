@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Premium System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dashboard-body">
+
+    <div class="background-wrapper">
+        <div class="glow-sphere pulse"></div>
+        <div class="glow-sphere secondary rotate"></div>
+    </div>
+
+    <aside class="sidebar glass-card">
+        <div class="sidebar-header">
+            <div class="brand-logo"><i data-lucide="zap"></i></div>
+            <h2>Premium</h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active"><i data-lucide="layout-grid"></i> Painel</a>
+            <a href="#" class="nav-item"><i data-lucide="bar-chart-3"></i> Estatísticas</a>
+            <a href="#" class="nav-item"><i data-lucide="users"></i> Usuários</a>
+            <a href="#" class="nav-item"><i data-lucide="settings"></i> Configurações</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn-logout">
+                <i data-lucide="log-out"></i> Sair
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="welcome-text">
+                <h1>Olá, <span id="user-display">Usuário</span>!</h1>
+                <p>Aqui está o que está acontecendo hoje.</p>
+            </div>
+            <div class="user-badge glass-card">
+                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="Avatar">
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card glass-card">
+                <div class="stat-icon"><i data-lucide="trending-up"></i></div>
+                <div class="stat-info">
+                    <h3>Vendas</h3>
+                    <p>R$ 12.450,00</p>
+                    <span class="trend positive">+12% este mês</span>
+                </div>
+            </div>
+            
+            <div class="stat-card glass-card">
+                <div class="stat-icon" style="background: #a855f7;"><i data-lucide="eye"></i></div>
+                <div class="stat-info">
+                    <h3>Visitas</h3>
+                    <p>3.240</p>
+                    <span class="trend">Estável</span>
+                </div>
+            </div>
+
+            <div class="stat-card glass-card">
+                <div class="stat-icon" style="background: #10b981;"><i data-lucide="check-circle"></i></div>
+                <div class="stat-info">
+                    <h3>Projetos</h3>
+                    <p>18</p>
+                    <span class="trend positive">4 concluídos</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="activity-section glass-card">
+            <div class="section-header">
+                <h2>Atividade Recente</h2>
+                <i data-lucide="more-horizontal"></i>
+            </div>
+            <div class="placeholder-chart">
+                <p>Gráfico de desempenho será renderizado aqui.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Recuperar nome do usuário se houver (exemplo)
+        const user = localStorage.getItem('loggedUser') || 'Admin';
+        document.getElementById('user-display').innerText = user;
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
