@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Alpha | HTML HUB</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos específicos da Lista de Rede */
+        .network-section {
+            margin-top: 30px;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .section-title h3 {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .online-count {
+            font-size: 0.65rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        .user-list-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-node {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            border-radius: 20px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-node:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: var(--primary);
+            transform: translateX(8px);
+        }
+
+        .user-node-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .node-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            object-fit: cover;
+        }
+
+        .node-details strong {
+            display: block;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .node-details span {
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .active-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--success);
+        }
+
+        /* Banner de Status do Usuário */
+        .status-banner {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), transparent);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 28px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-banner i {
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            width: 80px;
+            height: 80px;
+            opacity: 0.05;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <div class="background-wrapper">
+        <div class="glow-sphere pulse"></div>
+        <div class="glow-sphere secondary"></div>
+    </div>
+
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px 25px;">
+        <div style="font-weight: 900; letter-spacing: 2px; font-size: 1.1rem;">
+            HUB <span class="highlight">ALPHA</span>
+        </div>
+        <div id="display-id" style="font-family: monospace; font-size: 0.7rem; color: var(--success); background: rgba(16, 185, 129, 0.05); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
+            HUB_00000000
+        </div>
+    </header>
+
+    <main class="fade-in" style="padding: 0 20px;">
+        
+        <section class="status-banner">
+            <i data-lucide="activity"></i>
+            <h2 style="font-size: 1.6rem; font-weight: 900;">Olá, <span id="user-greeting">Membro</span></h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Seu terminal está sincronizado com a rede.</p>
+        </section>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="glass-card" style="padding: 20px; text-align: center; cursor: pointer;" onclick="window.location.href='perfil.html'">
+                <i data-lucide="user" style="color: var(--primary); margin-bottom: 8px;"></i>
+                <span style="display: block; font-size: 0.75rem; font-weight: 800;">PERFIL</span>
+            </div>
+            <div class="glass-card" style="padding: 20px; text-align: center; cursor: pointer;" onclick="window.location.href='editarperfil.html'">
+                <i data-lucide="sliders" style="color: var(--secondary); margin-bottom: 8px;"></i>
+                <span style="display: block; font-size: 0.75rem; font-weight: 800;">DEFINIÇÕES</span>
+            </div>
+        </div>
+
+        <section class="network-section">
+            <div class="section-title">
+                <h3>Rede Ativa</h3>
+                <span class="online-count" id="member-total">0 Membros</span>
+            </div>
+
+            <div class="user-list-wrapper" id="network-list">
+                <div style="text-align: center; padding: 30px; color: var(--text-dim); font-size: 0.8rem;">
+                    Sincronizando nós de rede...
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active">
+            <i data-lucide="layout-grid"></i>
+            <span>Painel</span>
+        </button>
+        <button class="nav-item" onclick="window.location.href='perfil.html'">
+            <i data-lucide="user"></i>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <script>
+        lucide.createIcons();
+
+        function initDashboard() {
+            const profile = JSON.parse(localStorage.getItem("profile"));
+            
+            if (!profile) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Atualiza Dados do Topo
+            document.getElementById('user-greeting').textContent = profile.name.split(' ')[0];
+            document.getElementById('display-id').textContent = profile.hubID;
+
+            renderNetwork(profile);
+        }
+
+        function renderNetwork(currentUser) {
+            const listElement = document.getElementById('network-list');
+            const totalElement = document.getElementById('member-total');
+
+            // Simulação de Rede (Seu perfil + Administradores do Sistema)
+            const networkData = [
+                { name: "Admin Alpha", hubID: "HUB_00000001", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Admin" },
+                { name: "Sistema HUB", hubID: "HUB_00000000", img: "https://api.dicebear.com/7.x/bottts/svg?seed=System" }
+            ];
+
+            // Adiciona o usuário atual no topo da lista
+            networkData.unshift(currentUser);
+
+            listElement.innerHTML = '';
+            totalElement.textContent = `${networkData.length} Membros`;
+
+            networkData.forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'user-node';
+                item.innerHTML = `
+                    <div class="user-node-info">
+                        <img src="${user.img}" class="node-avatar">
+                        <div class="node-details">
+                            <strong>${user.name}</strong>
+                            <span>${user.hubID}</span>
+                        </div>
+                    </div>
+                    <div class="active-dot"></div>
+                `;
+                listElement.appendChild(item);
+            });
+        }
+
+        initDashboard();
+    </script>
+</body>
+</html>
