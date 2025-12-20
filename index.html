@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Auth | Sistema Unificado</title>
+    <title>Acesso Premium | Login</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -11,17 +11,17 @@
 
     <div class="background-wrapper">
         <div class="glow-sphere pulse"></div>
-        <div class="glow-sphere secondary rotate"></div>
+        <div class="glow-sphere secondary"></div>
     </div>
 
     <main class="login-container">
-        <div class="glass-card main-card" id="auth-card">
+        <div class="glass-card" id="auth-card">
             
             <div id="login-screen">
                 <div class="card-header">
                     <div class="brand-logo"><i data-lucide="zap"></i></div>
                     <h1>Bem-vindo</h1>
-                    <p>Acesse sua conta para continuar.</p>
+                    <p>Acesse sua conta para ir ao Dashboard.</p>
                 </div>
 
                 <form onsubmit="handleAuth(event, 'login')">
@@ -29,7 +29,7 @@
                         <label>Usuário</label>
                         <div class="field-container">
                             <i data-lucide="user" class="field-icon"></i>
-                            <input type="text" id="login-user" placeholder="Seu usuário" required>
+                            <input type="text" id="login-user" placeholder="Digite admin" required>
                         </div>
                     </div>
 
@@ -37,70 +37,53 @@
                         <label>Senha</label>
                         <div class="field-container">
                             <i data-lucide="lock" class="field-icon"></i>
-                            <input type="password" id="login-pass" placeholder="••••••••" required>
-                            <button type="button" class="toggle-password" onclick="togglePass('login-pass')">
-                                <i data-lucide="eye"></i>
-                            </button>
+                            <input type="password" id="login-pass" placeholder="Digite 1234" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="cta-button">
-                        <span>Entrar</span>
+                    <button type="submit" class="cta-button" id="btn-login">
+                        <span>Entrar no Sistema</span>
                         <i data-lucide="log-in"></i>
                     </button>
                 </form>
 
                 <div class="card-footer">
-                    <a href="javascript:void(0)" onclick="alert('Funcionalidade de recuperação enviada ao e-mail adm!')">Esqueceu a senha?</a>
-                    <div class="divider"><span>ou use</span></div>
-                    <div class="social-helpers">
-                        <button class="social-btn" onclick="alert('Login via GitHub em breve!')"><i data-lucide="github"></i></button>
-                        <button class="social-btn" onclick="alert('Login via Google em breve!')"><i data-lucide="mail"></i></button>
-                    </div>
-                    <p class="signup-text">Novo por aqui? <a href="javascript:void(0)" onclick="switchScreen('register')">Criar conta</a></p>
+                    <p class="signup-text">Não tem conta? <a href="javascript:void(0)" onclick="switchScreen('register')">Criar conta</a></p>
                 </div>
             </div>
 
             <div id="register-screen" style="display: none;">
                 <div class="card-header">
-                    <div class="brand-logo" style="background: #10b981;"><i data-lucide="user-plus"></i></div>
+                    <div class="brand-logo" style="background: var(--success);"><i data-lucide="user-plus"></i></div>
                     <h1>Criar Conta</h1>
-                    <p>Junte-se a nós hoje mesmo.</p>
+                    <p>Preencha os dados para se cadastrar.</p>
                 </div>
 
                 <form onsubmit="handleAuth(event, 'register')">
                     <div class="input-field">
-                        <label>Nome Completo</label>
-                        <div class="field-container">
-                            <i data-lucide="info" class="field-icon"></i>
-                            <input type="text" placeholder="Como quer ser chamado?" required>
-                        </div>
-                    </div>
-
-                    <div class="input-field">
-                        <label>Escolha um Usuário</label>
+                        <label>Novo Usuário</label>
                         <div class="field-container">
                             <i data-lucide="at-sign" class="field-icon"></i>
-                            <input type="text" placeholder="@usuario" required>
+                            <input type="text" placeholder="Ex: kaue_pro" required>
                         </div>
                     </div>
 
                     <div class="input-field">
-                        <label>Crie uma Senha</label>
+                        <label>Senha</label>
                         <div class="field-container">
                             <i data-lucide="shield-check" class="field-icon"></i>
-                            <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required>
+                            <input type="password" placeholder="••••••••" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="cta-button" style="background: #10b981;">
+                    <button type="submit" class="cta-button" style="background: var(--success);">
                         <span>Finalizar Cadastro</span>
                         <i data-lucide="check"></i>
                     </button>
                 </form>
 
                 <div class="card-footer">
-                    <p class="signup-text">Já tem conta? <a href="javascript:void(0)" onclick="switchScreen('login')">Fazer Login</a></p>
+                    <p class="signup-text">Já é membro? <a href="javascript:void(0)" onclick="switchScreen('login')">Fazer Login</a></p>
                 </div>
             </div>
 
@@ -108,46 +91,59 @@
     </main>
 
     <script>
+        // Inicializa ícones
         lucide.createIcons();
 
-        // Troca entre telas com animação
+        // Função para trocar de tela (Login <-> Registro)
         function switchScreen(screen) {
             const login = document.getElementById('login-screen');
             const register = document.getElementById('register-screen');
-            const card = document.getElementById('auth-card');
-
-            card.style.transform = "scale(0.95)";
-            card.style.opacity = "0.5";
-
-            setTimeout(() => {
-                if(screen === 'register') {
-                    login.style.display = 'none';
-                    register.style.display = 'block';
-                } else {
-                    login.style.display = 'block';
-                    register.style.display = 'none';
-                }
-                card.style.transform = "scale(1)";
-                card.style.opacity = "1";
-                lucide.createIcons();
-            }, 300);
+            
+            if(screen === 'register') {
+                login.style.display = 'none';
+                register.style.display = 'block';
+            } else {
+                login.style.display = 'block';
+                register.style.display = 'none';
+            }
+            lucide.createIcons();
         }
 
-        function togglePass(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-
-        function handleAuth(e, type) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
+        // Lógica de Autenticação e REDIRECIONAMENTO
+        function handleAuth(event, type) {
+            event.preventDefault(); // Impede a página de recarregar sozinha
+            
+            const btn = event.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            // Efeito visual de carregamento
             btn.innerHTML = "Processando...";
-            btn.style.opacity = "0.6";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
 
             setTimeout(() => {
-                alert(type === 'login' ? "Login realizado!" : "Conta criada com sucesso!");
-                location.reload();
-            }, 1500);
+                if(type === 'login') {
+                    const user = document.getElementById('login-user').value;
+                    const pass = document.getElementById('login-pass').value;
+
+                    // Teste Simples (Usuário: admin / Senha: 1234)
+                    if(user === "admin" && pass === "1234") {
+                        // AQUI ESTÁ O SEGREDO: Redireciona para a dashboard
+                        window.location.href = "dashboard.html"; 
+                    } else {
+                        alert("Usuário ou senha incorretos! Tente admin e 1234");
+                        btn.innerHTML = originalText;
+                        btn.style.opacity = "1";
+                        btn.style.pointerEvents = "auto";
+                    }
+                } else {
+                    alert("Conta criada com sucesso! Agora faça login.");
+                    switchScreen('login');
+                    btn.innerHTML = originalText;
+                    btn.style.opacity = "1";
+                    btn.style.pointerEvents = "auto";
+                }
+            }, 1000);
         }
     </script>
 </body>
