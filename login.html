@@ -3,104 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | HTML HUB</title>
+    <title>Login | HUB Alpha</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos Exclusivos para a Nova Experiência de Login */
+        .auth-card-premium {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 28px;
+            background: rgba(10, 12, 18, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.65rem;
+            color: var(--success);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 12px;
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .pulse-dot {
+            width: 6px; height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse-green 1.5s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .input-group-modern {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .input-group-modern:focus-within {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .login-type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            padding: 10px;
+            border: none;
+            background: none;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .btn-scan {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 18px;
+            border-radius: 18px;
+            color: white;
+            font-weight: 800;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px var(--primary-glow);
+            transition: 0.3s;
+        }
+
+        .btn-scan:hover { transform: translateY(-3px); filter: brightness(1.1); }
+    </style>
 </head>
-<body class="dashboard-body" style="display: flex; align-items: center; justify-content: center;">
+<body class="dashboard-body" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
 
     <div class="background-wrapper">
         <div class="glow-sphere pulse"></div>
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <main class="login-box fade-in">
-        <div class="glass-card" style="width: 100%; max-width: 380px; padding: 40px; text-align: center;">
-            
-            <div class="brand-logo" style="margin: 0 auto 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);">
-                <i data-lucide="shield-check" style="color: white; width: 30px; height: 30px;"></i>
-            </div>
-
-            <h1 style="margin-bottom: 10px;">Acessar Portal</h1>
-            <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 30px;">Insira suas credenciais HUB</p>
-
-            <form id="loginForm">
-                <div class="input-field">
-                    <label>ID ou Usuário</label>
-                    <div class="field-container">
-                        <i data-lucide="hash" class="field-icon"></i>
-                        <input type="text" id="user" placeholder="Ex: admin" required>
-                    </div>
-                </div>
-
-                <div class="input-field" style="margin-top: 20px;">
-                    <label>Senha de Acesso</label>
-                    <div class="field-container">
-                        <i data-lucide="key-round" class="field-icon"></i>
-                        <input type="password" id="pass" placeholder="••••••••" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="cta-button" style="margin-top: 30px;">
-                    <span>Entrar no Sistema</span>
-                    <i data-lucide="arrow-right"></i>
-                </button>
-            </form>
-
-            <div style="margin-top: 25px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
-                <p style="font-size: 0.85rem; color: var(--text-dim);">
-                    Não possui um ID? <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 700;">Criar ID HUB</a>
-                </p>
-            </div>
+    <main class="auth-card-premium fade-in">
+        <div class="system-status">
+            <div class="pulse-dot"></div>
+            Servidor Online: Alpha_01
         </div>
+
+        <div style="margin-bottom: 30px;">
+            <h1 style="font-size: 1.8rem; font-weight: 900;">Acesso à <span class="highlight">Rede</span></h1>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Insira seu ID Alfanumérico ou nome de usuário.</p>
+        </div>
+
+        <div class="login-type-toggle">
+            <button class="toggle-btn active" id="btn-login-mode" onclick="switchMode(true)">Entrar</button>
+            <button class="toggle-btn" id="btn-reg-mode" onclick="switchMode(false)">Novo ID</button>
+        </div>
+
+        <form id="accessForm">
+            <div class="input-group-modern">
+                <div style="display: flex; align-items: center; padding: 0 15px;">
+                    <i data-lucide="hash" style="width: 18px; color: var(--primary);"></i>
+                    <input type="text" id="credential" placeholder="Ex: HUB_WBXPWHC9 ou Nome" required 
+                           style="background: none; border: none; padding: 18px 12px; color: white; width: 100%;">
+                </div>
+            </div>
+
+            <div class="input-group-modern">
+                <div style="display: flex; align-items: center; padding: 0 15px;">
+                    <i data-lucide="key-round" style="width: 18px; color: var(--primary);"></i>
+                    <input type="password" id="access_key" placeholder="Senha de segurança" required 
+                           style="background: none; border: none; padding: 18px 12px; color: white; width: 100%;">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-scan" id="mainActionBtn" style="margin-top: 20px;">
+                <span id="btn-text">Validar Acesso</span>
+                <i data-lucide="scan-eye"></i>
+            </button>
+        </form>
+
+        <p id="hint-text" style="text-align: center; margin-top: 25px; font-size: 0.75rem; color: var(--text-dim);">
+            Protocolo de segurança HUB V.4 habilitado.
+        </p>
     </main>
 
     <script>
         lucide.createIcons();
 
-        document.getElementById('loginForm').onsubmit = function(e) {
-            e.preventDefault();
-            
-            const userInput = document.getElementById('user').value;
-            const passInput = document.getElementById('pass').value;
-            const btn = document.querySelector('.cta-button');
+        let isLogin = true;
 
-            // Feedback de carregamento
-            btn.innerHTML = '<span>Verificando...</span>';
-            btn.style.opacity = '0.7';
-            btn.style.pointerEvents = 'none';
+        function switchMode(login) {
+            isLogin = login;
+            document.getElementById('btn-login-mode').classList.toggle('active', login);
+            document.getElementById('btn-reg-mode').classList.toggle('active', !login);
+            
+            document.getElementById('btn-text').textContent = login ? "Validar Acesso" : "Gerar Identidade";
+            document.getElementById('credential').placeholder = login ? "Ex: HUB_WBXPWHC9 ou Nome" : "Escolha um nome de usuário";
+            
+            lucide.createIcons();
+        }
+
+        // NOVO GERADOR ALFANUMÉRICO
+        function generateAlfanumericID() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let res = '';
+            for(let i=0; i<8; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
+            return `HUB_${res}`;
+        }
+
+        document.getElementById('accessForm').onsubmit = function(e) {
+            e.preventDefault();
+            const cred = document.getElementById('credential').value;
+            const btn = document.getElementById('mainActionBtn');
+
+            btn.style.opacity = "0.7";
+            btn.innerHTML = "Escaneando...";
 
             setTimeout(() => {
-                const savedProfile = JSON.parse(localStorage.getItem("profile"));
+                const storage = JSON.parse(localStorage.getItem("profile"));
 
-                // 1. Verifica se é o Admin padrão
-                if (userInput === "admin" && passInput === "1234") {
-                    if (!savedProfile) {
-                        // Cria um perfil admin se não existir
-                        localStorage.setItem("profile", JSON.stringify({
-                            name: "Administrador",
-                            handle: "admin",
-                            hubID: "HUB_00000000",
-                            created: "20/12/2025",
-                            bio: "Conta mestre do sistema.",
-                            img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
-                        }));
+                if(!isLogin) {
+                    // MODO REGISTRO
+                    const newID = generateAlfanumericID();
+                    const profile = {
+                        name: cred,
+                        hubID: newID,
+                        handle: cred.toLowerCase().replace(/\s/g, '_'),
+                        bio: "Usuário validado via protocolo alfanumérico.",
+                        img: `https://api.dicebear.com/7.x/avataaars/svg?seed=${cred}`,
+                        created: new Date().toLocaleDateString('pt-BR')
+                    };
+                    localStorage.setItem("profile", JSON.stringify(profile));
+                    alert(`ID GERADO: ${newID}\nGuarde-o para acesso futuro!`);
+                    switchMode(true);
+                } else {
+                    // MODO LOGIN
+                    if(storage && (cred === storage.name || cred === storage.hubID)) {
+                        window.location.href = 'dashboard.html';
+                    } else if (cred === "admin") {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        alert("ACESSO NEGADO: Identidade não localizada.");
                     }
-                    window.location.href = 'dashboard.html';
-                } 
-                // 2. Verifica se é o usuário cadastrado (pelo nome ou pelo ID)
-                else if (savedProfile && (userInput === savedProfile.name || userInput === savedProfile.hubID) && passInput === "1234") {
-                    window.location.href = 'dashboard.html';
-                } 
-                else {
-                    alert("Acesso negado. Verifique seu ID e Senha.");
-                    btn.innerHTML = '<span>Entrar no Sistema</span> <i data-lucide="arrow-right"></i>';
-                    btn.style.opacity = '1';
-                    btn.style.pointerEvents = 'auto';
                 }
+                
+                btn.style.opacity = "1";
+                btn.innerHTML = `<span>${isLogin ? 'Validar Acesso' : 'Gerar Identidade'}</span> <i data-lucide="scan-eye"></i>`;
                 lucide.createIcons();
-            }, 1000);
-        };
+            }, 1800);
+        }
     </script>
 </body>
 </html>
