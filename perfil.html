@@ -3,10 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil | HTML HUB</title>
+    <title>Perfil Alpha | HTML HUB</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* CSS EXCLUSIVO PARA O NOVO PERFIL */
+        .profile-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        /* Banner com Botão Editar Interno */
+        .banner-box {
+            height: 180px;
+            border-radius: 25px 25px 0 0;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        .edit-banner-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .edit-banner-btn:hover { background: var(--primary); }
+
+        /* Foto de Perfil com Borda Animada */
+        .avatar-wrapper {
+            margin-top: -60px;
+            margin-left: 20px;
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: inline-block;
+        }
+
+        .avatar-border-animated {
+            position: absolute;
+            inset: -3px;
+            border-radius: 35px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 200% 200%;
+            animation: gradient-border 3s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradient-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .avatar-img-main {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            object-fit: cover;
+            border: 4px solid var(--bg-dark);
+            z-index: 2;
+        }
+
+        /* Status Automático */
+        .status-badge-auto {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border: 4px solid var(--bg-dark);
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 15px var(--success);
+        }
+
+        /* Badge de Owner Laranja Animado */
+        .owner-badge {
+            display: none; /* Escondido por padrão, via JS mostramos */
+            background: linear-gradient(135deg, #ff8c00, #ff4500);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            animation: owner-glow 2s infinite alternate;
+            margin-left: 10px;
+            vertical-align: middle;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @keyframes owner-glow {
+            0% { box-shadow: 0 0 5px #ff8c00; filter: brightness(1); }
+            100% { box-shadow: 0 0 15px #ff4500; filter: brightness(1.3); }
+        }
+
+        .info-content {
+            padding: 20px;
+        }
+
+        .id-text {
+            font-family: monospace;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+
+        .creation-text {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body class="dashboard-body">
 
@@ -15,72 +143,46 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <header class="app-header fade-in">
-        <span class="app-brand">PERFIL <span class="highlight">HUB</span></span>
-    </header>
-
-    <main class="profile-layout">
-        
-        <div class="glass-card profile-main-card fade-in" style="animation-delay: 0.1s;">
-            <div class="banner-wrapper">
-                <div id="profileBanner" class="banner-img"></div>
-                <div class="banner-overlay" style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg-dark));"></div>
+    <main class="profile-container fade-in">
+        <div class="glass-card" style="padding: 0; overflow: hidden;">
+            
+            <div id="p-banner" class="banner-box">
+                <button class="edit-banner-btn" onclick="window.location.href='editarperfil.html'">
+                    <i data-lucide="edit-2" style="width: 14px;"></i>
+                    Editar Perfil
+                </button>
             </div>
 
-            <div class="avatar-container" style="margin-top: -55px; position: relative; z-index: 5; padding-left: 20px;">
-                <div class="avatar-ring online" id="statusRing" style="width: 100px; height: 100px; background: var(--bg-dark); padding: 4px; border-radius: 30px; border: 2px solid var(--success);">
-                    <img id="profileImg" src="" alt="Avatar" style="width: 100%; height: 100%; border-radius: 25px; object-fit: cover;">
-                </div>
+            <div class="avatar-wrapper">
+                <div class="avatar-border-animated"></div>
+                <img id="p-img" src="" class="avatar-img-main">
+                <div class="status-badge-auto"></div>
             </div>
 
-            <div class="user-meta" style="padding: 20px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h2 id="profileName" style="font-size: 1.6rem; font-weight: 800;">Carregando...</h2>
-                    <span class="status-indicator online" style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 3px 10px; border-radius: 50px; font-weight: 900;">ONLINE</span>
+            <div class="info-content">
+                <div style="display: flex; align-items: center;">
+                    <h2 id="p-name" style="font-size: 1.7rem; font-weight: 900;">Nome</h2>
+                    <span id="p-owner" class="owner-badge">OWNER</span>
+                    <span style="color: var(--success); font-size: 0.7rem; font-weight: 800; margin-left: auto;">ONLINE</span>
                 </div>
+
+                <span id="p-handle" style="color: var(--primary); font-weight: 700; font-size: 0.95rem;">@usuario</span>
                 
-                <span id="profileHandle" style="color: var(--primary); font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 12px;">@usuario</span>
-
-                <div class="hub-id-box" onclick="copyID()" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--glass-border); cursor: pointer;">
-                    <i data-lucide="fingerprint" style="width: 16px; color: var(--text-dim);"></i>
-                    <span id="displayHubID" style="font-family: monospace; font-weight: 800; color: white; letter-spacing: 1px;">HUB_00000000</span>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border);">
+                    <div class="id-text">ID: <span id="p-id" style="color: white; font-weight: 800;">HUB_</span></div>
+                    <div class="creation-text">Conta Criada: <span id="p-date">--/--/----</span></div>
                 </div>
 
-                <p id="profileBio" style="margin-top: 15px; color: var(--text-dim); font-size: 0.85rem; line-height: 1.6;">
-                    Buscando biografia no sistema...
+                <p id="p-bio" style="margin-top: 15px; font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
+                    ...
                 </p>
             </div>
-
-            <div style="padding: 0 20px 20px;">
-                <button class="cta-button" onclick="window.location.href='editarperfil.html'" style="margin-bottom: 10px;">
-                    <i data-lucide="edit-3"></i>
-                    <span>Editar Perfil</span>
-                </button>
-                <button onclick="window.location.href='logout.html'" style="width: 100%; background: none; border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <i data-lucide="log-out" style="width: 16px;"></i>
-                    Sair da Conta
-                </button>
-            </div>
         </div>
-
-        <div class="glass-card fade-in" style="margin-top: 15px; animation-delay: 0.2s; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px;">
-            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; text-align: center;">
-                <i data-lucide="calendar" style="width: 18px; color: var(--primary); margin-bottom: 5px;"></i>
-                <span style="display: block; font-size: 0.6rem; color: var(--text-dim);">MEMBRO DESDE</span>
-                <strong id="creationDate" style="font-size: 0.8rem;">--/--/----</strong>
-            </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; text-align: center;">
-                <i data-lucide="shield-check" style="width: 18px; color: var(--success); margin-bottom: 5px;"></i>
-                <span style="display: block; font-size: 0.6rem; color: var(--text-dim);">STATUS ID</span>
-                <strong style="font-size: 0.8rem; color: var(--success);">VERIFICADO</strong>
-            </div>
-        </div>
-
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="home"></i>
+            <i data-lucide="layout-grid"></i>
             <span>Início</span>
         </button>
         <button class="nav-item active">
@@ -92,27 +194,28 @@
     <script>
         lucide.createIcons();
 
-        function loadProfile() {
+        function load() {
             const data = JSON.parse(localStorage.getItem("profile"));
-            if (!data) { window.location.href = 'index.html'; return; }
+            if(!data) { window.location.href='index.html'; return; }
 
-            document.getElementById('profileName').textContent = data.name;
-            document.getElementById('displayHubID').textContent = data.hubID;
-            document.getElementById('profileHandle').textContent = `@${data.handle || 'usuario'}`;
-            document.getElementById('profileBio').textContent = data.bio || "Sem biografia.";
-            document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=User";
-            document.getElementById('creationDate').textContent = data.created;
-            
-            if(data.banner) document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
+            document.getElementById('p-name').textContent = data.name;
+            document.getElementById('p-handle').textContent = `@${data.handle || data.name.toLowerCase().replace(/\s/g, '')}`;
+            document.getElementById('p-id').textContent = data.hubID;
+            document.getElementById('p-date').textContent = data.created;
+            document.getElementById('p-bio').textContent = data.bio || "Membro oficial da rede HTML HUB.";
+            document.getElementById('p-img').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=User";
+
+            if(data.banner) {
+                document.getElementById('p-banner').style.backgroundImage = `url(${data.banner})`;
+            }
+
+            // LÓGICA DO BADGE DE OWNER PARA O ID ESPECÍFICO
+            if(data.hubID === "HUB_VAROGHAA") {
+                document.getElementById('p-owner').style.display = "inline-block";
+            }
         }
 
-        function copyID() {
-            const id = document.getElementById('displayHubID').textContent;
-            navigator.clipboard.writeText(id);
-            alert("ID Copiado!");
-        }
-
-        loadProfile();
+        load();
     </script>
 </body>
 </html>
