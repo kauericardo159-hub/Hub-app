@@ -1,29 +1,81 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zylo - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login Seguro com Google</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
+        .login-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+        #user-info { margin-top: 20px; display: none; }
+        .profile-pic { width: 80px; border-radius: 50%; margin-bottom: 10px; }
+    </style>
 </head>
-<body class="bg-[#0b0e11] text-white flex items-center justify-center min-h-screen">
+<body>
 
-    <div class="glass-card p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg text-center shadow-2xl">
-        <h1 class="text-4xl font-black italic bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-2">ZYLO</h1>
-        <p class="text-gray-500 text-xs uppercase tracking-[0.2em] mb-8">Autenticação Segura</p>
+    <div class="login-card">
+        <h2>Bem-vindo</h2>
+        <p>Acesse sua conta com segurança</p>
 
-        <button id="btn-google" class="w-full bg-white text-black font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-200 transition-all active:scale-95">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" class="w-5 h-5">
-            Entrar com Google
-        </button>
+        <div id="g_id_onload"
+             data-client_id="SEU_CLIENT_ID_AQUI.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
 
-        <div id="status" class="mt-6 text-blue-400 text-xs font-mono hidden">
-            <span class="animate-pulse">A verificar credenciais...</span>
+        <div class="g_id_signin"
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="outline"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left">
+        </div>
+
+        <div id="user-info">
+            <img id="user-img" class="profile-pic" src="" alt="Foto do usuário">
+            <h3 id="user-name"></h3>
+            <p id="user-email"></p>
+            <button onclick="logout()">Sair</button>
         </div>
     </div>
 
-    <script type="module" src="auth.js"></script>
+    <script>
+        // Função que lida com a resposta do Google
+        function handleCredentialResponse(response) {
+            // O "credential" é um JWT (JSON Web Token)
+            const responsePayload = decodeJwtResponse(response.credential);
+
+            console.log("ID: " + responsePayload.sub);
+            console.log('Nome: ' + responsePayload.name);
+            console.log('Email: ' + responsePayload.email);
+
+            // Interface
+            document.querySelector(".g_id_signin").style.display = "none";
+            const userInfo = document.getElementById("user-info");
+            userInfo.style.display = "block";
+            
+            document.getElementById("user-img").src = responsePayload.picture;
+            document.getElementById("user-name").innerText = responsePayload.name;
+            document.getElementById("user-email").innerText = responsePayload.email;
+        }
+
+        // Função simples para decodificar o JWT (Sem bibliotecas externas)
+        function decodeJwtResponse(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+        function logout() {
+            google.accounts.id.disableAutoSelect();
+            location.reload(); // Simples recarregamento para resetar o estado
+        }
+    </script>
 </body>
 </html>
-
