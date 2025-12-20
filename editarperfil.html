@@ -3,29 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil | HTML Hub</title>
+    <title>Configurações | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Ajustes específicos para a tela de edição */
-        .edit-container { max-width: 440px; margin: 0 auto; padding: 20px 15px; }
-        .setup-section { margin-bottom: 25px; }
-        .setup-section h3 { font-size: 0.9rem; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .edit-container { max-width: 440px; margin: 0 auto; padding: 10px 15px 100px; }
         
-        .upload-group { display: flex; gap: 15px; margin-bottom: 20px; }
-        .upload-box { 
-            flex: 1; background: var(--input-bg); border: 2px dashed var(--glass-border); 
-            border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+        /* Box de ID Bloqueado */
+        .id-lock-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
         }
-        .upload-box:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
-        .upload-box i { color: var(--text-dim); margin-bottom: 8px; }
-        .upload-box span { display: block; font-size: 0.7rem; color: var(--text-dim); font-weight: 600; }
+        .id-lock-info span { display: block; font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
+        .id-lock-info strong { color: var(--success); font-family: monospace; font-size: 1.1rem; }
+        .lock-icon { color: var(--text-dim); opacity: 0.5; }
 
-        .preview-circle { width: 50px; height: 50px; border-radius: 15px; object-fit: cover; margin: 10px auto 0; display: none; border: 2px solid var(--primary); }
+        /* Upload Estilizado */
+        .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .upload-card {
+            background: var(--input-bg);
+            border: 2px dashed var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+        }
+        .upload-card:hover { border-color: var(--primary); }
+        .upload-card span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--text-dim); margin-top: 5px; }
         
+        .preview-img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; margin: 8px auto 0; display: none; border: 1px solid var(--primary); }
         input[type="file"] { display: none; }
-        
-        .save-area { position: fixed; bottom: 110px; left: 0; width: 100%; padding: 0 20px; }
+
+        textarea {
+            width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border);
+            border-radius: 12px; color: white; padding: 12px; min-height: 100px;
+            resize: none; outline: none; transition: 0.3s;
+        }
+        textarea:focus { border-color: var(--primary); }
     </style>
 </head>
 <body class="dashboard-body">
@@ -36,72 +58,66 @@
     </div>
 
     <header class="app-header">
-        <button onclick="window.location.href='perfil.html'" style="position: absolute; left: 20px; background: none; border: none; color: white; cursor: pointer;">
-            <i data-lucide="arrow-left"></i>
+        <button onclick="window.location.href='perfil.html'" style="position: absolute; left: 20px; background: none; border: none; color: white;">
+            <i data-lucide="chevron-left"></i>
         </button>
-        <span class="app-brand">CONFIGURAÇÕES</span>
+        <span class="app-brand">AJUSTES</span>
     </header>
 
     <main class="edit-container fade-in">
         
-        <div class="glass-card" style="padding: 25px;">
-            
-            <div class="setup-section">
-                <h3>Aparência</h3>
-                <div class="upload-group">
-                    <label class="upload-box">
-                        <i data-lucide="camera"></i>
-                        <span>Foto Perfil</span>
-                        <input type="file" id="edit-avatar" accept="image/*">
-                        <img id="pre-avatar" class="preview-circle">
-                    </label>
-                    <label class="upload-box">
-                        <i data-lucide="image"></i>
-                        <span>Banner</span>
-                        <input type="file" id="edit-banner" accept="image/*">
-                        <img id="pre-banner" class="preview-circle" style="width: 80px; aspect-ratio: 16/9; border-radius: 8px;">
-                    </label>
-                </div>
+        <div class="id-lock-box">
+            <div class="id-lock-info">
+                <span>Identidade Global (HUB_ID)</span>
+                <strong id="readonly-id">HUB_00000000</strong>
             </div>
-
-            <div class="setup-section">
-                <h3>Informações Pessoais</h3>
-                
-                <div class="input-field">
-                    <label>Nome Visível</label>
-                    <div class="field-container">
-                        <i data-lucide="user" class="field-icon"></i>
-                        <input type="text" id="edit-name" placeholder="Ex: Kauê Machado">
-                    </div>
-                </div>
-
-                <div class="input-field">
-                    <label>Nome de Usuário (@)</label>
-                    <div class="field-container">
-                        <i data-lucide="at-sign" class="field-icon"></i>
-                        <input type="text" id="edit-handle" placeholder="kaue_hub">
-                    </div>
-                </div>
-
-                <div class="input-field">
-                    <label>Biografia</label>
-                    <div class="field-container">
-                        <textarea id="edit-bio" style="width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border); border-radius: 12px; color: white; padding: 12px; min-height: 80px; outline: none; transition: 0.3s;" placeholder="Conte um pouco sobre si..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <button class="cta-button" onclick="saveAll()">
-                <i data-lucide="save"></i>
-                <span>Guardar Alterações</span>
-            </button>
-
+            <i data-lucide="lock" class="lock-icon"></i>
         </div>
+
+        <div class="glass-card" style="padding: 25px;">
+            <h3 style="font-size: 0.8rem; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px;">VISUAL E MÍDIA</h3>
+            
+            <div class="upload-row">
+                <label class="upload-card">
+                    <i data-lucide="user-circle"></i>
+                    <span>Foto</span>
+                    <input type="file" id="up-avatar" accept="image/*">
+                    <img id="pre-avatar" class="preview-img">
+                </label>
+                <label class="upload-card">
+                    <i data-lucide="image"></i>
+                    <span>Banner</span>
+                    <input type="file" id="up-banner" accept="image/*">
+                    <img id="pre-banner" class="preview-img">
+                </label>
+            </div>
+
+            <h3 style="font-size: 0.8rem; color: var(--primary); margin: 20px 0 15px; letter-spacing: 1px;">INFORMAÇÕES</h3>
+
+            <div class="input-field">
+                <label>Nome de Exibição</label>
+                <div class="field-container">
+                    <i data-lucide="type" class="field-icon"></i>
+                    <input type="text" id="in-name" placeholder="Seu nome">
+                </div>
+            </div>
+
+            <div class="input-field">
+                <label>Bio do Perfil</label>
+                <textarea id="in-bio" placeholder="Escreva algo sobre você..."></textarea>
+            </div>
+
+            <button class="cta-button" onclick="saveChanges()" style="margin-top: 10px;">
+                <i data-lucide="check"></i>
+                <span>Salvar Alterações</span>
+            </button>
+        </div>
+
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item" onclick="window.location.href='dashboard.html'">
-            <i data-lucide="layout-grid"></i>
+            <i data-lucide="home"></i>
             <span>Início</span>
         </button>
         <button class="nav-item active" onclick="window.location.href='perfil.html'">
@@ -113,60 +129,45 @@
     <script>
         lucide.createIcons();
 
-        // Carregar dados atuais nos campos
-        const profileData = JSON.parse(localStorage.getItem("profile")) || {
-            name: "Usuário",
-            handle: "usuario",
-            bio: "",
-            img: "",
-            banner: "",
-            created: new Date().toLocaleDateString()
-        };
+        // Carrega os dados existentes
+        const data = JSON.parse(localStorage.getItem("profile"));
 
-        document.getElementById('edit-name').value = profileData.name;
-        document.getElementById('edit-handle').value = profileData.handle;
-        document.getElementById('edit-bio').value = profileData.bio;
+        if(data) {
+            document.getElementById('readonly-id').textContent = data.hubID;
+            document.getElementById('in-name').value = data.name;
+            document.getElementById('in-bio').value = data.bio || "";
+        }
 
-        // Preview de Imagem (Avatar)
-        document.getElementById('edit-avatar').onchange = e => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                profileData.img = reader.result;
-                const img = document.getElementById('pre-avatar');
-                img.src = reader.result;
-                img.style.display = 'block';
+        // Previews de imagem
+        function setupUpload(inputId, imgId, dataKey) {
+            document.getElementById(inputId).onchange = e => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    data[dataKey] = reader.result;
+                    const preview = document.getElementById(imgId);
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
             };
-            reader.readAsDataURL(e.target.files[0]);
-        };
+        }
 
-        // Preview de Imagem (Banner)
-        document.getElementById('edit-banner').onchange = e => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                profileData.banner = reader.result;
-                const img = document.getElementById('pre-banner');
-                img.src = reader.result;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        };
+        setupUpload('up-avatar', 'pre-avatar', 'img');
+        setupUpload('up-banner', 'pre-banner', 'banner');
 
-        // Função para Guardar tudo
-        function saveAll() {
-            profileData.name = document.getElementById('edit-name').value;
-            profileData.handle = document.getElementById('edit-handle').value;
-            profileData.bio = document.getElementById('edit-bio').value;
+        function saveChanges() {
+            data.name = document.getElementById('in-name').value;
+            data.bio = document.getElementById('in-bio').value;
 
-            localStorage.setItem("profile", JSON.stringify(profileData));
+            localStorage.setItem("profile", JSON.stringify(data));
             
-            // Efeito visual de sucesso
             const btn = document.querySelector('.cta-button');
             btn.style.background = "var(--success)";
-            btn.innerHTML = "<span>Guardado com Sucesso!</span>";
-            
+            btn.innerHTML = "<span>Alterações Salvas!</span>";
+
             setTimeout(() => {
                 window.location.href = 'perfil.html';
-            }, 1000);
+            }, 800);
         }
     </script>
 </body>
