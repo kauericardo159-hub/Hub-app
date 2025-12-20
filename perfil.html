@@ -3,98 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Alpha | HTML HUB</title>
+    <title>Perfil | HTML HUB</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos Exclusivos para a Identidade Alfanumérica */
-        .identity-card {
-            margin-top: -50px;
-            position: relative;
-            z-index: 20;
-        }
-
-        .id-badge-container {
-            display: flex;
-            flex-direction: column;
+        /* Ajustes para o ID Numérico Padrão */
+        .id-badge-classic {
+            display: inline-flex;
             align-items: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .id-badge-container::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, var(--primary), transparent 30%);
-            animation: rotate-border 6s linear infinite;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        @keyframes rotate-border {
-            100% { transform: rotate(360deg); }
-        }
-
-        .id-label {
-            font-size: 0.6rem;
-            font-weight: 800;
-            color: var(--text-dim);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .id-value {
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--success);
-            text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
-            letter-spacing: 2px;
-        }
-
-        .copy-chip {
-            margin-top: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            color: var(--text-dim);
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            margin: 15px 0;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
             transition: 0.3s;
         }
 
-        .copy-chip:hover { background: var(--primary); color: white; }
+        .id-badge-classic i { width: 16px; color: var(--primary); }
+        
+        .id-badge-classic span {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1px;
+            font-size: 0.95rem;
+        }
 
-        .stat-grid-premium {
+        .id-badge-classic:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Grid de Informações Clássica */
+        .info-total-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
-        .stat-item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px 10px;
-            border-radius: 18px;
-            text-align: center;
+        .info-box {
+            background: var(--card-bg);
             border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            text-align: left;
         }
 
-        .stat-item i { width: 18px; color: var(--secondary); margin-bottom: 8px; }
-        .stat-item strong { display: block; font-size: 0.8rem; }
-        .stat-item span { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; }
-
+        .info-box i { color: var(--primary); margin-bottom: 10px; }
+        .info-box strong { display: block; font-size: 0.8rem; color: white; }
+        .info-box span { font-size: 0.7rem; color: var(--text-dim); }
     </style>
 </head>
 <body class="dashboard-body">
@@ -104,69 +64,60 @@
         <div class="glow-sphere secondary"></div>
     </div>
 
-    <main class="profile-layout">
+    <main class="profile-layout fade-in">
         
-        <div class="glass-card profile-main-card fade-in">
+        <div class="glass-card profile-main-card">
             <div class="banner-wrapper">
                 <div id="profileBanner" class="banner-img"></div>
-                <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg-dark));"></div>
+                <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));"></div>
             </div>
 
-            <div class="avatar-container identity-card">
-                <div class="avatar-ring online" id="statusRing">
-                    <img id="profileImg" src="" alt="User Avatar">
+            <div class="avatar-container" style="margin-top: -55px; position: relative; z-index: 5;">
+                <div class="avatar-ring online">
+                    <img id="profileImg" src="" alt="Avatar">
                 </div>
             </div>
 
-            <div class="user-meta" style="text-align: center;">
-                <h2 id="profileName" style="font-size: 1.8rem; font-weight: 900;">A carregar...</h2>
-                <span id="profileHandle" style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">@handle</span>
+            <div class="user-meta" style="padding-top: 10px;">
+                <h2 id="profileName" style="font-size: 1.7rem; font-weight: 800;">Carregando...</h2>
+                <span id="profileHandle" style="color: var(--primary); font-weight: 600;">@usuario</span>
 
-                <div class="id-badge-container">
-                    <span class="id-label">Assinatura Digital HUB</span>
-                    <span id="displayHubID" class="id-value">HUB_XXXXXXXX</span>
-                    <div class="copy-chip" onclick="copyID()">
-                        <i data-lucide="copy"></i>
-                        Copiar ID
+                <center>
+                    <div class="id-badge-classic" onclick="copyID()">
+                        <i data-lucide="hash"></i>
+                        <span id="displayHubID">HUB_00000000</span>
                     </div>
-                </div>
+                </center>
 
-                <p id="profileBio" style="color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; margin: 15px 0;">
-                    A carregar biografia do utilizador...
+                <p id="profileBio" style="margin: 15px 0; font-size: 0.9rem; color: var(--text-dim);">
+                    Buscando biografia...
                 </p>
 
-                <div class="stat-grid-premium">
-                    <div class="stat-item">
-                        <i data-lucide="shield-check"></i>
-                        <strong>Verificado</strong>
-                        <span>Status</span>
-                    </div>
-                    <div class="stat-item">
-                        <i data-lucide="zap"></i>
-                        <strong>Alpha</strong>
-                        <span>Acesso</span>
-                    </div>
-                    <div class="stat-item">
+                <div class="info-total-container">
+                    <div class="info-box">
                         <i data-lucide="calendar"></i>
-                        <strong id="creationDate">--/--</strong>
-                        <span>Desde</span>
+                        <strong>Criação</strong>
+                        <span id="creationDate">--/--/----</span>
+                    </div>
+                    <div class="info-box">
+                        <i data-lucide="check-circle"></i>
+                        <strong>Status</strong>
+                        <span>Verificado</span>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-actions" style="padding: 20px 24px;">
+            <div style="padding: 20px;">
                 <button class="cta-button" onclick="window.location.href='editarperfil.html'">
-                    <i data-lucide="settings"></i>
-                    <span>Configurar Perfil</span>
-                </button>
-                
-                <button class="cta-button" onclick="window.location.href='logout.html'" 
-                        style="background: none; border: 1px solid var(--danger); color: var(--danger); margin-top: 10px; box-shadow: none;">
-                    <i data-lucide="log-out"></i>
-                    <span>Sair da Rede</span>
+                    <i data-lucide="edit-3"></i>
+                    <span>Editar Perfil</span>
                 </button>
             </div>
         </div>
+
+        <button class="logout-minimal-btn" onclick="window.location.href='logout.html'" style="margin-top: 20px; color: var(--danger); opacity: 0.8; background: none; border: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;">
+            <i data-lucide="log-out"></i> Sair do Sistema
+        </button>
 
     </main>
 
@@ -186,19 +137,14 @@
 
         function loadProfile() {
             const data = JSON.parse(localStorage.getItem("profile"));
+            if (!data) { window.location.href = 'index.html'; return; }
 
-            if (!data) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Preenchimento de dados
             document.getElementById('profileName').textContent = data.name;
-            document.getElementById('displayHubID').textContent = data.hubID || "HUB_ERROR";
+            document.getElementById('displayHubID').textContent = data.hubID || "HUB_00000000";
             document.getElementById('profileHandle').textContent = `@${data.handle || 'user'}`;
-            document.getElementById('profileBio').textContent = data.bio || "Membro oficial do HUB Alpha.";
+            document.getElementById('profileBio').textContent = data.bio || "Membro oficial do HUB.";
             document.getElementById('profileImg').src = data.img || "https://api.dicebear.com/7.x/avataaars/svg?seed=Kaue";
-            document.getElementById('creationDate').textContent = data.created.split('/')[0] + '/' + data.created.split('/')[2].slice(-2);
+            document.getElementById('creationDate').textContent = data.created;
             
             if(data.banner) {
                 document.getElementById('profileBanner').style.backgroundImage = `url(${data.banner})`;
@@ -207,17 +153,8 @@
 
         function copyID() {
             const id = document.getElementById('displayHubID').textContent;
-            navigator.clipboard.writeText(id).then(() => {
-                const chip = document.querySelector('.copy-chip');
-                chip.innerHTML = '<i data-lucide="check"></i> Copiado!';
-                chip.style.color = "var(--success)";
-                lucide.createIcons();
-                setTimeout(() => {
-                    chip.innerHTML = '<i data-lucide="copy"></i> Copiar ID';
-                    chip.style.color = "var(--text-dim)";
-                    lucide.createIcons();
-                }, 2000);
-            });
+            navigator.clipboard.writeText(id);
+            alert("ID HUB Copiado com sucesso!");
         }
 
         loadProfile();
