@@ -1,4 +1,60 @@
-/* Ajustes para o Formulário */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --bg-dark: #0b0e11;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-input: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Background Dinâmico */
+.bg-blur-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.2;
+}
+.cyan { width: 400px; height: 400px; background: #22d3ee; top: -10%; right: -5%; }
+.purple { width: 350px; height: 350px; background: #818cf8; bottom: 5%; left: -5%; }
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    animation: fadeIn 0.6s ease-out;
+}
+
+h1 { font-weight: 800; font-size: 1.6rem; margin-bottom: 8px; }
+p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 30px; }
+
+/* Inputs */
 .input-group {
     text-align: left;
     margin-bottom: 20px;
@@ -6,7 +62,7 @@
 
 .input-group label {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #94a3b8;
     margin-bottom: 8px;
     margin-left: 4px;
@@ -20,50 +76,57 @@
 
 .input-wrapper i {
     position: absolute;
-    left: 15px;
-    color: #6366f1;
-    font-size: 1rem;
+    left: 14px;
+    width: 18px;
+    color: #64748b;
 }
 
 .input-wrapper input {
     width: 100%;
-    padding: 12px 12px 12px 45px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 14px 14px 45px;
+    background: var(--glass-input);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    color: white;
+    color: #fff;
     outline: none;
     transition: 0.3s;
 }
 
 .input-wrapper input:focus {
-    border-color: #6366f1;
+    border-color: var(--primary);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
 .form-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    margin-bottom: 25px;
-    color: #94a3b8;
-}
-
-.forgot-link {
-    color: #6366f1;
-    text-decoration: none;
-}
-
-.card-footer {
     margin-top: 25px;
     font-size: 0.85rem;
-    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.card-footer a {
-    color: #fff;
-    font-weight: 600;
-    text-decoration: none;
+.form-footer a { color: var(--primary); text-decoration: none; }
+.form-footer a:hover { text-decoration: underline; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
