@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso ao Sistema | Login</title>
+    <title>Login | Sua Plataforma</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -17,18 +17,18 @@
     <main class="container">
         <div class="glass-card">
             <header>
-                <div class="icon-box">
-                    <i class="fa-solid fa-shield-halved"></i>
+                <div class="logo-icon">
+                    <i data-lucide="shield-check"></i>
                 </div>
-                <h1>Portal de Acesso</h1>
-                <p>Insira suas credenciais para continuar.</p>
+                <h1>Acesse sua conta</h1>
+                <p>Entre com seu usuário e senha abaixo.</p>
             </header>
 
             <form id="login-form" onsubmit="handleLogin(event)">
                 <div class="input-group">
-                    <label for="username">Nome de usuário</label>
+                    <label for="username">Usuário</label>
                     <div class="input-wrapper">
-                        <i class="fa-regular fa-user"></i>
+                        <i data-lucide="user"></i>
                         <input type="text" id="username" placeholder="Digite seu usuário" required>
                     </div>
                 </div>
@@ -36,46 +36,35 @@
                 <div class="input-group">
                     <label for="password">Senha</label>
                     <div class="input-wrapper">
-                        <i class="fa-regular fa-lock"></i>
+                        <i data-lucide="lock"></i>
                         <input type="password" id="password" placeholder="••••••••" required>
                     </div>
                 </div>
 
-                <div class="form-footer">
-                    <label class="remember-me">
-                        <input type="checkbox"> Lembrar de mim
-                    </label>
-                    <a href="#" class="forgot-link">Esqueci a senha</a>
-                </div>
-
-                <button type="submit" class="btn-primary">Entrar no Sistema</button>
+                <button type="submit" class="btn-primary">Entrar na plataforma</button>
             </form>
 
-            <footer class="card-footer">
-                <span>Não tem uma conta? <a href="#">Criar agora</a></span>
+            <footer class="form-footer">
+                <a href="#">Esqueceu a senha?</a>
+                <span>Não tem conta? <a href="#">Criar agora</a></span>
             </footer>
         </div>
     </main>
 
     <script>
-        function handleLogin(event) {
-            event.preventDefault(); // Impede o recarregamento da página
+        // Inicializa os ícones
+        lucide.createIcons();
 
+        function handleLogin(event) {
+            event.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
 
-            // Simulação de lógica de autenticação
+            // Logica temporária de teste
             console.log("Tentativa de login:", { user, pass });
+            alert(`Bem-vindo, ${user}! Redirecionando...`);
             
-            // Exemplo de feedback visual simples
-            const btn = document.querySelector('.btn-primary');
-            btn.innerText = "Autenticando...";
-            btn.style.opacity = "0.7";
-
-            setTimeout(() => {
-                alert(`Bem-vindo, ${user}! Redirecionando...`);
-                // window.location.href = "dashboard.html"; 
-            }, 1500);
+            // Aqui você faria o fetch para sua API na Vercel
         }
     </script>
 </body>
